@@ -17,7 +17,8 @@ public:
 
 private:
     Ui::Widget *ui;
-    QProcess *process;
+    void disPlay();
+    void mate_about_run();
 
 
         const char* program_name = "Kylin";
@@ -83,9 +84,7 @@ private:
 //            {NULL}
 
 private slots:
-    void OnReadData();
-    void disPlay();
-    void mate_about_run();
+
 
 
 };

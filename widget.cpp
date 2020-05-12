@@ -94,7 +94,7 @@ gchar* get_lsb_release_value(char *p_key)
         char tmp_key[LINE_BUFF_SIZE_64] = {0};
         char tmp_value[LINE_BUFF_SIZE_64] = {0};
         sscanf(line,"%[^=]=%s",tmp_key,tmp_value);
-        qDebug()<<"get_lsb_release_value   tmp_value"<<tmp_value   <<"p_key : "<<p_key;
+//        qDebug()<<"get_lsb_release_value   tmp_value"<<tmp_value   <<"p_key : "<<p_key;
         if(0 == strcmp(tmp_key,p_key))
         {
             fclose(fp);
@@ -268,18 +268,22 @@ void Widget::mate_about_run(void)
                 sprintf(homefile, "%s/.info", getenv("HOME"));
                 fd = open(homefile, O_RDONLY);
                 read(fd, info, sizeof(info));
+                qDebug()<<"info:    "<<info;
+                ui->label_2->setText(info);
 //                close(fd);
             }
         }
     }
     else
     {
+        qDebug()<<"kyinfoTerm & licenseTerm  =0 ";
         if (g_file_test("/usr/bin/getSystemInfo.py", G_FILE_TEST_EXISTS)) {
             system("python3 /usr/bin/getSystemInfo.py ShowTerm");
             sprintf(homefile, "%s/.info", getenv("HOME"));
             fd = open(homefile, O_RDONLY);
             read(fd, info, sizeof(info));
-            qDebug()<<"info  :  "<<info;
+                ui->label_2->setText(info);
+                qDebug()<<"info    :   "<<info;
 //            close(fd);
         }
     }
@@ -332,9 +336,16 @@ void Widget::mate_about_run(void)
 //    qDebug()<<"name    *****:    "<<name;
 //    qDebug()<<"version    *****:    "<<version;
 //    qDebug()<<"copy_right    *****:    "<<copy_right;
+//    qDebug()<<"info    ****:"<<info;
 
 
+//    QIcon kylinicon=QIcon("/home/kylin/work/v101/about/ukui-about2/resource/kylin.png");
+    QIcon kylinicon=QIcon("/usr/share/mate-about/kylin.png");
+    ui->pushButton->setIcon(kylinicon);
+    ui->pushButton->setIconSize(QSize(400,300));
+    ui->pushButton->setText("");
     ui->label->setText(copy_right);
+
     ui->label_3->setText(website);
 
         //gtk 设置界面的方式
@@ -405,26 +416,8 @@ void Widget::disPlay()
 {
     mate_about_run();
     setWindowTitle("关于银河麒麟");
-    setWindowIcon(QIcon::fromTheme("firefox"));
-    QIcon kylinicon=QIcon("/home/kylin/work/v101/about/ukui-about2/kylin.png");
-    ui->pushButton->setIcon(kylinicon);
-    ui->pushButton->setIconSize(QSize(400,300));
-    ui->pushButton->setText("");
-//    ui->label->setText("版权所有@2009-2020 KylinOs 保留所有权利 \n KylinOs V10版及其用户界面受中国及其他国家和地区的商标法或已颁布的知识产权法保护 \n https://www.kylinos.cn/");
+//    setWindowIcon(QIcon::fromTheme("firefox"));
     ui->label->setAlignment(Qt::AlignCenter);
     ui->label_2->setText("");
 
-
-//    process = new QProcess(this);
-//    process->start("bash");//调用控制台程序
-//    process->waitForStarted();//等待程序确实启动再往下走
-//    process->write("ls\n");//输入查看当前目录的命令试试。加\n代表控制台中都回车。（查看当前目录命令：linux是 ls，windows 是dir）
-//    //启动python程序，运行指定py脚本。
-//    process->write("python3 /usr/bin/getSystemInfo.py \n");
-//    connect(process,SIGNAL(readyReadStandardOutput()),this,SLOT(OnReadData()));
-}
-void Widget::OnReadData()
-{
-    QString strResult = QString::fromLocal8Bit(process->readAllStandardOutput().data());
-    qDebug() << strResult;
 }
