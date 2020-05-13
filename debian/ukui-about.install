@@ -1,0 +1,3 @@
+ukui-about usr/bin/
+resource/getSystemInfo.py usr/bin/
+resource/kylin.png usr/share/mate-about/
