@@ -35,6 +35,12 @@ HEADERS += \
 FORMS += \
     widget.ui
 
+TRANSLATIONS += \
+    resource/ukui-about_zh_CN.ts
+
+#qm_file.path = $${PREFIX}/resource/
+#INSTALLS += \
+#    resource/ukui-about_zh_CN.ts qm_file
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin

@@ -9,7 +9,10 @@
 #include <time.h>
 #include <sys/utsname.h>
 #include <QDebug>
-#include <QDesktopServices>
+#include<QDesktopServices>
+#include<QUrl>
+#include <QIcon>
+
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
  **/
@@ -171,6 +174,7 @@ Widget::Widget(QWidget *parent)
     , ui(new Ui::Widget)
 {
     ui->setupUi(this);
+    setWindowIcon(QIcon::fromTheme("distributor-logo-kylin"));
     this->setFixedSize(800,600);
     disPlay();
 
@@ -187,7 +191,7 @@ void Widget::mate_about_run(void)
     char homefile[80], info[1024];
     int fd;
     char *name= NULL;
-    char *copy_right =NULL;
+    QString copy_right;
     char *icon_name = NULL;
     char kyinfoTerm[BUFF_SIZE] = {0};
     char licenseTerm[BUFF_SIZE] = {0};
@@ -301,7 +305,7 @@ void Widget::mate_about_run(void)
                 name = "Kylin Desktop PKS";
             }
             g_free(kernel_name);
-            kernel_name = NULL;
+            kernel_name = NULL;    setWindowIcon(QIcon::fromTheme("distributor-logo-kylin"));
         }
         else
         {
@@ -309,26 +313,26 @@ void Widget::mate_about_run(void)
         }
 
         icon_name = "/usr/share/mate-about/kylin.png";
-        copy_right = g_strdup_printf ("All rights reserved by 2009-2020 KylinOS. all rights reserved.\nKylin %s and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.", version);
-
+        copy_right = tr("All rights reserved by 2009-2020 KylinOS. all rights reserved.\n Kylin %1 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.").arg(version);
     }
     else if (match_systemname("Kylin\n") == 0)
     {
         name = "Kylin";
         icon_name = "/usr/share/mate-about/kylin.png";
-        copy_right = g_strdup_printf ("All rights reserved by 2009-2020 KylinOS. all rights reserved.\nKylin %s and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.", version);
+        copy_right = tr("All rights reserved by 2009-2020 KylinOS. all rights reserved.\n Kylin %1 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.").arg(version);
+//        copy_right=tr("版权所有©2009-2020 KylinOS.保留所有权利。\n Kylin %1版本及其用户界面受中国及其它国家地区的商标法和其它待颁布或已颁布的知识产权法保护").arg(version);
     }
     else if (match_systemname("YHKylin\n") == 0)
     {
         name = "YHKylin";
         icon_name = "/usr/share/mate-about/yhkylin.png";
-        copy_right = "All rights reserved by 2009-2020 YHKylinOS. all rights reserved.\nYHKylin version 4 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.";
+        copy_right = tr("All rights reserved by 2009-2020 YHKylinOS. all rights reserved. \n YHKylin version 4 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.");
     }
     else if (match_systemname("NeoKylin\n") == 0)
     {
         name = "NeoKylin";
         icon_name = "/usr/share/mate-about/neokylin.png";
-        copy_right = "All rights reserved by 2009-2020 NeoKylinOS. all rights reserved.\nNeoKylin version 10 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.";
+        copy_right = tr("All rights reserved by 2009-2020 NeoKylinOS. all rights reserved.\n NeoKylin version 10 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.");
     }
 
 
@@ -337,17 +341,22 @@ void Widget::mate_about_run(void)
 //    qDebug()<<"copy_right    *****:    "<<copy_right;
 //    qDebug()<<"info    ****:"<<info;
     QPixmap kylinicon(icon_name);
-    kylinicon=kylinicon.scaled(ui->label_4->width(),ui->label_4->height());
+    kylinicon=kylinicon.scaled(378,140);
     ui->label_4->setPixmap(kylinicon);
+
     ui->label->setText(copy_right);
+//    ui->label->adjustSize();
+//    ui->label->setWordWrap(true);
+    ui->label->setAlignment(Qt::AlignCenter);
     ui->label_2->setText(info);
     ui->label_2->setAlignment(Qt::AlignCenter);
+    ui->label_4->setAlignment(Qt::AlignCenter);
     QFont font;
-    font.setFamily("宋体");
     font.setPixelSize(20);
     ui->label_2->setFont(font);
-    ui->label_3->setText(QString::fromLocal8Bit("<a style='color: blue;' href = www.doshow.com> http://www.kylinos.cn</a>"));
-//    connect(ui->label_3,SIGNAL(linkActivated(QString)),this,SLOT(openUrl(website)));
+    ui->label_3->setOpenExternalLinks(true);
+    ui->label_3->setText(QString::fromLocal8Bit("<a style='color: blue;' href = http://www.kylinos.cn> http://www.kylinos.cn</a>"));
+    connect(ui->label_3,SIGNAL(linkActivated(QString)),this,SLOT(openUrl(QString)));
 
 }
 
@@ -355,13 +364,13 @@ void Widget::mate_about_run(void)
 void Widget::disPlay()
 {
     mate_about_run();
-    setWindowTitle("关于银河麒麟");
+    setWindowTitle(tr("about Kylin"));
+    setWindowFlag(Qt::WindowStaysOnTopHint);
     ui->label->setAlignment(Qt::AlignCenter);
-
 }
 
-//void Widget::openUrl(QString url)
-//{
-////    QDesktopServices::openUrl(QUrl(url));
-//}
+void Widget::openUrl(QString url)
+{
+//    QDesktopServices :: openUrl(QUrl(QLatin1String("http://www.kylinos.cn");
+}
 

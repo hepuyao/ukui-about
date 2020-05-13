@@ -84,7 +84,7 @@ private:
 //            {NULL}
 
 private slots:
-//        void openUrl(QString url);
+        void openUrl(QString url);
 
 
 
