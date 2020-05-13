@@ -13,24 +13,11 @@
   <property name="windowTitle">
    <string>Widget</string>
   </property>
-  <widget class="QPushButton" name="pushButton">
-   <property name="geometry">
-    <rect>
-     <x>120</x>
-     <y>40</y>
-     <width>511</width>
-     <height>191</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>PushButton</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
      <x>60</x>
-     <y>470</y>
+     <y>490</y>
      <width>701</width>
      <height>61</height>
     </rect>
@@ -45,7 +32,7 @@
      <x>50</x>
      <y>240</y>
      <width>701</width>
-     <height>201</height>
+     <height>261</height>
     </rect>
    </property>
    <property name="text">
@@ -56,9 +43,22 @@
    <property name="geometry">
     <rect>
      <x>240</x>
-     <y>540</y>
+     <y>550</y>
      <width>301</width>
      <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>40</y>
+     <width>471</width>
+     <height>171</height>
     </rect>
    </property>
    <property name="text">

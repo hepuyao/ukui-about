@@ -9,6 +9,7 @@
 #include <time.h>
 #include <sys/utsname.h>
 #include <QDebug>
+#include <QDesktopServices>
 /* qt会将glib里的signals成员识别为宏，所以取消该宏
  * 后面如果用到signals时，使用Q_SIGNALS代替即可
  **/
@@ -23,14 +24,15 @@ extern "C" {
 
 
 #define LSB_RELEASE "/etc/lsb-release"
-#define DISTRIB_ID "Kylin"
-#define DISTRIB_RELEASE "4.0.2"
-#define DISTRIB_CODENAME "juniper"
-#define DISTRIB_DESCRIPTION "Kylin 4.0.2"
-#define DISTRIB_KYLIN_RELEASE "4.0-2SP3"
-#define DISTRIB_VERSION_TYPE "enterprise"       //true为社区版本
-#define DISTRIB_VERSION_MODE "normal"
-#define DISTRIB_VERSION_CUSTOM "Kylin"    //pks为社区版pks
+#define DISTRIB_ID "DISTRIB_ID"
+#define DISTRIB_RELEASE "DISTRIB_RELEASE"
+#define DISTRIB_CODENAME "DISTRIB_CODENAME"
+#define DISTRIB_DESCRIPTION "DISTRIB_DESCRIPTION"
+#define DISTRIB_KYLIN_RELEASE "DISTRIB_KYLIN_RELEASE"
+#define DISTRIB_VERSION_TYPE "DISTRIB_VERSION_TYPE"
+#define DISTRIB_VERSION_MODE "DISTRIB_VERSION_MODE"
+#define DISTRIB_VERSION_CUSTOM "DISTRIB_VERSION_TYPE"
+
 
 #define LINE_BUFF_SIZE_128 128
 #define LINE_BUFF_SIZE_64 64
@@ -169,6 +171,7 @@ Widget::Widget(QWidget *parent)
     , ui(new Ui::Widget)
 {
     ui->setupUi(this);
+    this->setFixedSize(800,600);
     disPlay();
 
 }
@@ -268,8 +271,6 @@ void Widget::mate_about_run(void)
                 sprintf(homefile, "%s/.info", getenv("HOME"));
                 fd = open(homefile, O_RDONLY);
                 read(fd, info, sizeof(info));
-                qDebug()<<"info:    "<<info;
-                ui->label_2->setText(info);
 //                close(fd);
             }
         }
@@ -282,8 +283,6 @@ void Widget::mate_about_run(void)
             sprintf(homefile, "%s/.info", getenv("HOME"));
             fd = open(homefile, O_RDONLY);
             read(fd, info, sizeof(info));
-                ui->label_2->setText(info);
-                qDebug()<<"info    :   "<<info;
 //            close(fd);
         }
     }
@@ -337,78 +336,19 @@ void Widget::mate_about_run(void)
 //    qDebug()<<"version    *****:    "<<version;
 //    qDebug()<<"copy_right    *****:    "<<copy_right;
 //    qDebug()<<"info    ****:"<<info;
-
-
-//    QIcon kylinicon=QIcon("/home/kylin/work/v101/about/ukui-about2/resource/kylin.png");
-    QIcon kylinicon=QIcon("/usr/share/mate-about/kylin.png");
-    ui->pushButton->setIcon(kylinicon);
-    ui->pushButton->setIconSize(QSize(400,300));
-    ui->pushButton->setText("");
+    QPixmap kylinicon(icon_name);
+    kylinicon=kylinicon.scaled(ui->label_4->width(),ui->label_4->height());
+    ui->label_4->setPixmap(kylinicon);
     ui->label->setText(copy_right);
+    ui->label_2->setText(info);
+    ui->label_2->setAlignment(Qt::AlignCenter);
+    QFont font;
+    font.setFamily("宋体");
+    font.setPixelSize(20);
+    ui->label_2->setFont(font);
+    ui->label_3->setText(QString::fromLocal8Bit("<a style='color: blue;' href = www.doshow.com> http://www.kylinos.cn</a>"));
+//    connect(ui->label_3,SIGNAL(linkActivated(QString)),this,SLOT(openUrl(website)));
 
-    ui->label_3->setText(website);
-
-        //gtk 设置界面的方式
-#if 0
-    // name
-    gtk_about_dialog_set_program_name(mate_about_dialog, gettext(name)); //版本名称
-
-    GdkPixbuf *logo = gdk_pixbuf_new_from_file(icon_name, &error);
-    if(!error)
-        gtk_about_dialog_set_logo(mate_about_dialog, logo);              //logo
-    else
-    {
-        g_print("Error:%s\n", error->message);
-        g_error_free(error);
-    }//modified by ph
-
-    // version
-    gtk_about_dialog_set_version(mate_about_dialog, version);             //版本
-
-    // credits and website
-    if(copy_right!=NULL)
-        gtk_about_dialog_set_copyright(mate_about_dialog, copy_right);  //copyright
-    gtk_about_dialog_set_website(mate_about_dialog, website);            //websete
-
-    /**
-     * This generate a random message.
-     * The comments index must not be more than comments_count - 1
-     */
-    int count = 2;
-    char *lang, *p = info, *welcome_str = "Welcome to use Kylin!";
-    lang = g_getenv ("LANG");
-    if(strncmp(lang,"zh_CN",strlen("zh_CN"))!=0){
-        for(;count;)
-            if(*(p++) == '\n')
-                count--;
-        sprintf(p, "%s", welcome_str);
-        p += strlen(welcome_str);
-        memset(p, 0, info + 1024 -p);
-    }
-
-
-    gtk_about_dialog_set_comments(mate_about_dialog, info);                  //info
-
-//    mate_about_dialog_set_authors(mate_about_dialog, authors);
-//    mate_about_dialog_set_artists(mate_about_dialog, artists);
-//    mate_about_dialog_set_documenters(mate_about_dialog, documenters);
-    /* Translators should localize the following string which will be
-     * displayed in the about box to give credit to the translator(s). */
-//    mate_about_dialog_set_translator_credits(mate_about_dialog, _("translator-credits"));
-
-    #if GTK_CHECK_VERSION(3, 0, 0)
-        gtk_window_set_application(GTK_WINDOW(mate_about_dialog), mate_about_application);
-    #endif
-
-    // start and destroy
-    gtk_dialog_run((GtkDialog*) mate_about_dialog);
-    gtk_widget_destroy((GtkWidget*) mate_about_dialog);
-
-#endif
-
-#if 1
-
-#endif
 }
 
 
@@ -416,8 +356,12 @@ void Widget::disPlay()
 {
     mate_about_run();
     setWindowTitle("关于银河麒麟");
-//    setWindowIcon(QIcon::fromTheme("firefox"));
     ui->label->setAlignment(Qt::AlignCenter);
-    ui->label_2->setText("");
 
 }
+
+//void Widget::openUrl(QString url)
+//{
+////    QDesktopServices::openUrl(QUrl(url));
+//}
+
