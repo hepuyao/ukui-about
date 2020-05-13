@@ -1,3 +1,4 @@
 ukui-about usr/bin/
 resource/getSystemInfo.py usr/bin/
 resource/kylin.png usr/share/mate-about/
+resource/ukui-about_zh_CN.qm usr/share/ukui/
