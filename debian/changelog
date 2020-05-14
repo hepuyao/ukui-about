@@ -1,3 +1,9 @@
+ukui-about (1.0.0-3kylin1) v100; urgency=medium
+
+  * rm ui files
+
+ -- hepuyao <hepuyao@kylinos.cn>  Thu, 14 May 2020 09:53:00 +0800
+
 ukui-about (1.0.0-3) v101; urgency=medium
   
   * Rewrite in Qt
