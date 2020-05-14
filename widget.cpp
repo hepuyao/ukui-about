@@ -175,7 +175,7 @@ Widget::Widget(QWidget *parent)
 {
     ui->setupUi(this);
     setWindowIcon(QIcon::fromTheme("distributor-logo-kylin"));
-    this->setFixedSize(800,600);
+    this->setFixedSize(700,600);
     disPlay();
 
 }
@@ -320,7 +320,6 @@ void Widget::mate_about_run(void)
         name = "Kylin";
         icon_name = "/usr/share/mate-about/kylin.png";
         copy_right = tr("All rights reserved by 2009-2020 KylinOS. all rights reserved.\n Kylin %1 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.").arg(version);
-//        copy_right=tr("版权所有©2009-2020 KylinOS.保留所有权利。\n Kylin %1版本及其用户界面受中国及其它国家地区的商标法和其它待颁布或已颁布的知识产权法保护").arg(version);
     }
     else if (match_systemname("YHKylin\n") == 0)
     {
@@ -335,28 +334,31 @@ void Widget::mate_about_run(void)
         copy_right = tr("All rights reserved by 2009-2020 NeoKylinOS. all rights reserved.\n NeoKylin version 10 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.");
     }
 
-
-//    qDebug()<<"name    *****:    "<<name;
-//    qDebug()<<"version    *****:    "<<version;
-//    qDebug()<<"copy_right    *****:    "<<copy_right;
-//    qDebug()<<"info    ****:"<<info;
     QPixmap kylinicon(icon_name);
     kylinicon=kylinicon.scaled(378,140);
-    ui->label_4->setPixmap(kylinicon);
+    label_logo=new QLabel(this);
+    label_logo->setGeometry(161,20,378,140);
+    label_logo->setPixmap(kylinicon);
 
-    ui->label->setText(copy_right);
-//    ui->label->adjustSize();
-//    ui->label->setWordWrap(true);
-    ui->label->setAlignment(Qt::AlignCenter);
-    ui->label_2->setText(info);
-    ui->label_2->setAlignment(Qt::AlignCenter);
-    ui->label_4->setAlignment(Qt::AlignCenter);
+    label_info=new QLabel(this);
+    label_info->setGeometry(0,160,700,340);
+    label_info->setText(info);
+    label_info->setWordWrap(true);
+    label_info->setAlignment(Qt::AlignCenter);
     QFont font;
     font.setPixelSize(20);
-    ui->label_2->setFont(font);
-    ui->label_3->setOpenExternalLinks(true);
-    ui->label_3->setText(QString::fromLocal8Bit("<a style='color: blue;' href = http://www.kylinos.cn> http://www.kylinos.cn</a>"));
-    connect(ui->label_3,SIGNAL(linkActivated(QString)),this,SLOT(openUrl(QString)));
+    label_info->setFont(font);
+
+    label_copyright=new QLabel(this);
+    label_copyright->setGeometry(0,500,700,60);
+    label_copyright->setText(copy_right);
+    label_copyright->setAlignment(Qt::AlignCenter);
+
+    label_website=new QLabel(this);
+    label_website->setGeometry(0,560,700,30);
+    label_website->setOpenExternalLinks(true);
+    label_website->setText(QString::fromLocal8Bit("<a style='color: blue;' href = http://www.kylinos.cn> http://www.kylinos.cn</a>"));
+    label_website->setAlignment(Qt::AlignCenter);
 
 }
 
@@ -365,12 +367,5 @@ void Widget::disPlay()
 {
     mate_about_run();
     setWindowTitle(tr("about Kylin"));
-    setWindowFlag(Qt::WindowStaysOnTopHint);
-    ui->label->setAlignment(Qt::AlignCenter);
-}
-
-void Widget::openUrl(QString url)
-{
-//    QDesktopServices :: openUrl(QUrl(QLatin1String("http://www.kylinos.cn");
 }
 

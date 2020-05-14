@@ -3,6 +3,8 @@
 #include <QProcess>
 #include <QWidget>
 #include <QString>
+#include <QLabel>
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
 QT_END_NAMESPACE
@@ -19,6 +21,10 @@ private:
     Ui::Widget *ui;
     void disPlay();
     void mate_about_run();
+    QLabel *label_logo;
+    QLabel *label_info;
+    QLabel *label_copyright;
+    QLabel *label_website;
 
 
         const char* program_name = "Kylin";
@@ -82,9 +88,6 @@ private:
 //        static GOptionEntry command_entries[] = {
 //            {"version", 'v', 0, G_OPTION_ARG_NONE, &mate_about_nogui, "Show MATE version", NULL},
 //            {NULL}
-
-private slots:
-        void openUrl(QString url);
 
 
 
