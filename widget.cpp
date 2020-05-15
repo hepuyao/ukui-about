@@ -256,8 +256,8 @@ void Widget::mate_about_run(void)
         if(string_2_time(kyinfoTerm)==string_2_time(licenseTerm))//没有激活
         {
             time_t t;
-            if (g_file_test("/usr/bin/getSystemInfo.py", G_FILE_TEST_EXISTS)) {
-                system("python3 /usr/bin/getSystemInfo.py noShowTerm");
+            if (g_file_test("/usr/share/ukui/getSystemInfo.py", G_FILE_TEST_EXISTS)) {
+                system("python3 /usr/share/ukui/getSystemInfo.py noShowTerm");
                 sprintf(homefile, "%s/.info", getenv("HOME"));
                 fd = open(homefile, O_RDONLY);
                 read(fd, info, sizeof(info));
@@ -270,8 +270,8 @@ void Widget::mate_about_run(void)
         }
         else
         {
-            if (g_file_test("/usr/bin/getSystemInfo.py", G_FILE_TEST_EXISTS)) {
-                system("python3 /usr/bin/getSystemInfo.py ShowTerm");
+            if (g_file_test("/usr/share/ukui/getSystemInfo.py", G_FILE_TEST_EXISTS)) {
+                system("python3 /usr/share/ukui/getSystemInfo.py ShowTerm");
                 sprintf(homefile, "%s/.info", getenv("HOME"));
                 fd = open(homefile, O_RDONLY);
                 read(fd, info, sizeof(info));
@@ -282,8 +282,8 @@ void Widget::mate_about_run(void)
     else
     {
         qDebug()<<"kyinfoTerm & licenseTerm  =0 ";
-        if (g_file_test("/usr/bin/getSystemInfo.py", G_FILE_TEST_EXISTS)) {
-            system("python3 /usr/bin/getSystemInfo.py ShowTerm");
+        if (g_file_test("/usr/share/ukui/getSystemInfo.py", G_FILE_TEST_EXISTS)) {
+            system("python3 /usr/share/ukui/getSystemInfo.py ShowTerm");
             sprintf(homefile, "%s/.info", getenv("HOME"));
             fd = open(homefile, O_RDONLY);
             read(fd, info, sizeof(info));
@@ -312,13 +312,13 @@ void Widget::mate_about_run(void)
             name = "Kylin Desktop PKS";
         }
 
-        icon_name = "/usr/share/mate-about/kylin.png";
+        icon_name = "/usr/share/ukui/kylin.png";
         copy_right = tr("All rights reserved by 2009-2020 KylinOS. all rights reserved.\n Kylin %1 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.").arg(version);
     }
     else if (match_systemname("Kylin\n") == 0)
     {
         name = "Kylin";
-        icon_name = "/usr/share/mate-about/kylin.png";
+        icon_name = "/usr/share/ukui/kylin.png";
         copy_right = tr("All rights reserved by 2009-2020 KylinOS. all rights reserved.\n Kylin %1 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.").arg(version);
     }
     else if (match_systemname("YHKylin\n") == 0)
@@ -359,7 +359,6 @@ void Widget::mate_about_run(void)
     label_website->setOpenExternalLinks(true);
     label_website->setText(QString::fromLocal8Bit("<a style='color: blue;' href = http://www.kylinos.cn> http://www.kylinos.cn</a>"));
     label_website->setAlignment(Qt::AlignCenter);
-
 }
 
 
