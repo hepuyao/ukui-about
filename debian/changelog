@@ -1,3 +1,15 @@
+ukui-about (1.0.0-3kylin3) v100; urgency=medium
+
+  * add depends qtbase5-dev
+
+ -- hepuyao <hepuyao@kylinos.cn>  Thu, 14 May 2020 19:14:17 +0800
+
+ukui-about (1.0.0-3kylin2) v100; urgency=medium
+
+  * change control file
+
+ -- hepuyao <hepuyao@kylinos.cn>  Thu, 14 May 2020 14:40:59 +0800
+
 ukui-about (1.0.0-3kylin1) v100; urgency=medium
 
   * rm ui files
