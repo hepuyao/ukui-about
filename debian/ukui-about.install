@@ -2,3 +2,4 @@ ukui-about usr/bin/
 resource/getSystemInfo.py usr/share/ukui/
 resource/kylin.png usr/share/ukui/
 resource/ukui-about_zh_CN.qm usr/share/ukui/
+resource/ukui-about.desktop  usr/share/applications/

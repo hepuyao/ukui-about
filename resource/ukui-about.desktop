@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=About Kylin
+Name[zh_CN]=关于银河麒麟
+Comment=Learn more about Kylin
+Comment[zh_CN]=进一步了解银河麒麟
+Exec=ukui-about
+Icon=distributor-logo-kylin
+Terminal=false
+Type=Application
+Categories=GTK;Core;Utility;
+OnlyShowIn=MATE;UKUI;
