@@ -175,7 +175,7 @@ Widget::Widget(QWidget *parent)
 {
     ui->setupUi(this);
     setWindowIcon(QIcon::fromTheme("distributor-logo-kylin"));
-    this->setFixedSize(700,600);
+//    this->setFixedSize(700,600);
     disPlay();
 
 }
@@ -337,28 +337,33 @@ void Widget::mate_about_run(void)
     QPixmap kylinicon(icon_name);
     kylinicon=kylinicon.scaled(378,140);
     label_logo=new QLabel(this);
-    label_logo->setGeometry(161,20,378,140);
     label_logo->setPixmap(kylinicon);
+    label_logo->setAlignment(Qt::AlignCenter);
+    label_logo->adjustSize();
+    label_logo->setGeometry(0,20,700,label_logo->height());
 
     label_info=new QLabel(this);
-    label_info->setGeometry(0,160,700,340);
     label_info->setText(info);
     label_info->setWordWrap(true);
     label_info->setAlignment(Qt::AlignCenter);
+    label_info->adjustSize();
     QFont font;
     font.setPixelSize(20);
     label_info->setFont(font);
+    label_info->setGeometry(0,20+label_logo->height(),700,label_info->height());
 
     label_copyright=new QLabel(this);
-    label_copyright->setGeometry(0,500,700,60);
     label_copyright->setText(copy_right);
     label_copyright->setAlignment(Qt::AlignCenter);
+    label_copyright->adjustSize();
+    label_copyright->setGeometry(0,20+label_logo->height()+label_info->height()+20,700,label_copyright->height());
 
     label_website=new QLabel(this);
-    label_website->setGeometry(0,560,700,30);
     label_website->setOpenExternalLinks(true);
     label_website->setText(QString::fromLocal8Bit("<a style='color: blue;' href = http://www.kylinos.cn> http://www.kylinos.cn</a>"));
     label_website->setAlignment(Qt::AlignCenter);
+    label_website->setGeometry(0,160+label_info->height()+20+label_copyright->height(),700,label_website->height());
+    this->setFixedSize(700,20+label_logo->height()+label_info->height()+20+label_copyright->height()+20+label_website->height());
 }
 
 
