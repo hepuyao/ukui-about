@@ -1,3 +1,21 @@
+ukui-about (1.0.0-3kylin7) v100; urgency=medium
+
+  * change class name  , rm /opt/ukui-about/bin/
+
+ -- hepuyao <hepuyao@kylinos.cn>  Wed, 10 Jun 2020 09:49:31 +0800
+
+ukui-about (1.0.0-3kylin6) v101; urgency=medium
+
+  * 解决自适应info内容
+
+ -- hepuyao <hepuyao@kylinos.cn>  Thu, 28 May 2020 10:41:58 +0800
+
+ukui-about (1.0.0-3kylin5) v101; urgency=medium
+
+  * add desktop
+
+ -- hepuyao <hepuyao@kylinos.cn>  Wed, 20 May 2020 09:29:47 +0800
+
 ukui-about (1.0.0-3kylin4) v100; urgency=medium
 
   * change .py files install
