@@ -27,13 +27,10 @@ LIBS          +=  -L/usr/lib/ -ldconf -lgsettings-qt
 
 SOURCES += \
     main.cpp \
-    widget.cpp
+    about.cpp
 
 HEADERS += \
-    widget.h
-
-FORMS += \
-    widget.ui
+    about.h
 
 TRANSLATIONS += \
     resource/ukui-about_zh_CN.ts
@@ -42,6 +39,6 @@ TRANSLATIONS += \
 #INSTALLS += \
 #    resource/ukui-about_zh_CN.ts qm_file
 # Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
+#qnx: target.path = /tmp/$${TARGET}/bin
+#else: unix:!android: target.path = /opt/$${TARGET}/bin
+#!isEmpty(target.path): INSTALLS += target

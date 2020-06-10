@@ -1,5 +1,4 @@
-#include "widget.h"
-#include "ui_widget.h"
+#include "about.h"
 #include <QProcess>
 #include <QDebug>
 #include <fcntl.h>
@@ -169,23 +168,19 @@ long int string_2_time(char *str_time)
     return mktime(&stm);
 }
 
-Widget::Widget(QWidget *parent)
+About::About(QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::Widget)
 {
-    ui->setupUi(this);
     setWindowIcon(QIcon::fromTheme("distributor-logo-kylin"));
-//    this->setFixedSize(700,600);
     disPlay();
 
 }
 
-Widget::~Widget()
+About::~About()
 {
-    delete ui;
 }
 
-void Widget::mate_about_run(void)
+void About::mate_about_run(void)
 {
     GError *error = NULL;
     char homefile[80], info[1024];
@@ -367,7 +362,7 @@ void Widget::mate_about_run(void)
 }
 
 
-void Widget::disPlay()
+void About::disPlay()
 {
     mate_about_run();
     setWindowTitle(tr("about Kylin"));

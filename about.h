@@ -6,19 +6,19 @@
 #include <QLabel>
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class Widget; }
+namespace Ui { class About; }
 QT_END_NAMESPACE
 
-class Widget : public QWidget
+class About : public QWidget
 {
     Q_OBJECT
 
 public:
-    Widget(QWidget *parent = nullptr);
-    ~Widget();
+    About(QWidget *parent = nullptr);
+    ~About();
 
 private:
-    Ui::Widget *ui;
+    Ui::About *ui;
     void disPlay();
     void mate_about_run();
     QLabel *label_logo;

@@ -1,4 +1,4 @@
-#include "widget.h"
+#include "about.h"
 #include <QApplication>
 #include <QTranslator>
 #include <QDebug>
@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
         else
             qDebug() << "Load translations file" << locale << "failed!";
     }
-    Widget w;
-    w.show();
+    About about;
+    about.show();
     return a.exec();
 }
