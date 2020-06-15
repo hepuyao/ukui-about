@@ -8,11 +8,13 @@ import sys
 
 #print(sys.argv[0])          #sys.argv[0] 类似于shell中的$0,但不是脚本名称，而是脚本的路径   
 #print(sys.argv[1])          #sys.argv[1] 表示传入的第一个参数
+#获取版本和授权相关信息
 cf = configparser.ConfigParser()
 info = ""
 text = ""
 kylin_version = ""
 info_build = ""
+update_info = ""
 if os.path.exists("/etc/.kyinfo"):
     cf.read("/etc/.kyinfo")
     secs = cf.sections()
@@ -20,7 +22,7 @@ if os.path.exists("/etc/.kyinfo"):
     str_key = cf.get("servicekey", "key")
     info_key = "服务序列号：" + str_key
     str_version = cf.get("dist", "dist_id")
-    info_version = "版本信息：" + str_version
+    info_version = "授权版本：" + str_version
     str_customer = cf.get("os", "to")
     info_customer = "客户单位：" + str_customer
     str_term = cf.get("os", "term")
@@ -38,11 +40,16 @@ if os.path.exists("/etc/.kyinfo"):
         if line.startswith("DISTRIB_KYLIN_RELEASE"):
             kylin_version = line[22:len(line)-1]
 
-    info_build = name + " "+kylin_version+" \nBuild " + tmp
-    if sys.argv[1]=="ShowTerm":
-        info = info_version + "\n" + info_customer.strip("\n") + "\n" + info_key + "\n" + info_term + "\n" + "温馨提示：如有问题请咨询销售\n" + "咨询电话：400-089-1870"
+    info_build = name + " "+kylin_version
+    if os.path.exists("/etc/.kylin-update"):
+        update_info = "更新状态：已更新至" + info_build + "补丁集\n"
+        info_build = ""
     else:
-        info = info_version + "\n" + info_customer.strip("\n") + "\n" + info_key + "\n" + "温馨提示：如有问题请咨询销售\n" + "咨询电话：400-089-1870"
+        info_build = info_build + "\n"
+    if sys.argv[1]=="ShowTerm":
+        info = info_version + "\n" + update_info + info_customer.strip("\n") + "\n" + info_key + "\n" + info_term + "\n" + "温馨提示：如有问题请咨询销售\n" + "咨询电话：400-089-1870"
+    else:
+        info = info_version + "\n" + update_info + info_customer.strip("\n") + "\n" + info_key + "\n" + "温馨提示：如有问题请咨询销售\n" + "咨询电话：400-089-1870"
 else:
     f = open("/etc/lsb-release", 'r')
     lines = f.readlines()
@@ -59,7 +66,7 @@ else:
     else:
         info = name + " " + version + "\n" + "当前版本未授权！\n"
 
-info = info_build + "\n" + info
+info = info_build + info
 f = open(GLib.get_home_dir() + "/.info", 'w')
 f.write(info)
 f.close()
