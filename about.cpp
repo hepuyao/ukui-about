@@ -44,6 +44,10 @@ extern "C" {
 #define LICENSE_FILE "/etc/LICENSE"
 #define BUFF_SIZE 256
 
+#define LEAVE_BLANK_HIGHT   10
+#define ABOUT_WIDGET_WIDTH  700
+#define LOGO_WIDTH          378
+#define LOGO_HIGTH          140
 char licenseTerm[BUFF_SIZE] = {0};
 
 #ifndef mate_gettext
@@ -329,36 +333,42 @@ void About::mate_about_run(void)
         copy_right = tr("All rights reserved by 2009-2020 NeoKylinOS. all rights reserved.\n NeoKylin version 10 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.");
     }
 
+    QString minfo="1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n 10\n 1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n 10\n";
     QPixmap kylinicon(icon_name);
-    kylinicon=kylinicon.scaled(378,140);
+    kylinicon=kylinicon.scaled(LOGO_WIDTH,LOGO_HIGTH);
     label_logo=new QLabel(this);
     label_logo->setPixmap(kylinicon);
     label_logo->setAlignment(Qt::AlignCenter);
     label_logo->adjustSize();
-    label_logo->setGeometry(0,20,700,label_logo->height());
+    label_logo->setGeometry(0,LEAVE_BLANK_HIGHT,ABOUT_WIDGET_WIDTH,label_logo->height());
 
     label_info=new QLabel(this);
-    label_info->setText(info);
+    label_info->setText(minfo);
     label_info->setWordWrap(true);
     label_info->setAlignment(Qt::AlignCenter);
     label_info->adjustSize();
     QFont font;
-    font.setPixelSize(20);
+    /* 使用QFont的setPointSize，此时字体的大小会跟随DPI改变而改变。
+     * 使用QFont的setPixelSize，此时字体的大小不会随DPI的改变而发生变化。
+     * 但两者都存在的问题是遇到无info文字被遮挡的问题
+　　　*/
+//    font.setPointSize(20);
     label_info->setFont(font);
-    label_info->setGeometry(0,20+label_logo->height(),700,label_info->height());
+    label_info->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height(),ABOUT_WIDGET_WIDTH,label_info->height());
 
     label_copyright=new QLabel(this);
     label_copyright->setText(copy_right);
     label_copyright->setAlignment(Qt::AlignCenter);
     label_copyright->adjustSize();
-    label_copyright->setGeometry(0,20+label_logo->height()+label_info->height()+20,700,label_copyright->height());
+    label_copyright->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height()+label_info->height(),ABOUT_WIDGET_WIDTH,label_copyright->height());
 
     label_website=new QLabel(this);
     label_website->setOpenExternalLinks(true);
     label_website->setText(QString::fromLocal8Bit("<a style='color: blue;' href = http://www.kylinos.cn> http://www.kylinos.cn</a>"));
     label_website->setAlignment(Qt::AlignCenter);
-    label_website->setGeometry(0,160+label_info->height()+20+label_copyright->height(),700,label_website->height());
-    this->setFixedSize(700,20+label_logo->height()+label_info->height()+20+label_copyright->height()+20+label_website->height());
+    label_website->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height()+label_info->height()+label_copyright->height(),ABOUT_WIDGET_WIDTH,label_website->height());
+    qDebug()<<"";
+    this->setFixedSize(ABOUT_WIDGET_WIDTH,LEAVE_BLANK_HIGHT*2+label_logo->height()+label_info->height()+label_copyright->height()+label_website->height());
 }
 
 

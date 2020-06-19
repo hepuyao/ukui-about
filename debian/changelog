@@ -1,3 +1,9 @@
+ukui-about (1.0.0-3kylin10) v100; urgency=medium
+
+  * 解决info字符被截断的bug
+
+ -- hepuyao <hepuyao@kylinos.cn>  Fri, 19 Jun 2020 17:08:31 +0800
+
 ukui-about (1.0.0-3kylin7) v100; urgency=medium
 
   * change class name  , rm /opt/ukui-about/bin/
