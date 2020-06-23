@@ -333,7 +333,6 @@ void About::mate_about_run(void)
         copy_right = tr("All rights reserved by 2009-2020 NeoKylinOS. all rights reserved.\n NeoKylin version 10 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.");
     }
 
-    QString minfo="1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n 10\n 1\n 2\n 3\n 4\n 5\n 6\n 7\n 8\n 9\n 10\n";
     QPixmap kylinicon(icon_name);
     kylinicon=kylinicon.scaled(LOGO_WIDTH,LOGO_HIGTH);
     label_logo=new QLabel(this);
@@ -343,7 +342,7 @@ void About::mate_about_run(void)
     label_logo->setGeometry(0,LEAVE_BLANK_HIGHT,ABOUT_WIDGET_WIDTH,label_logo->height());
 
     label_info=new QLabel(this);
-    label_info->setText(minfo);
+    label_info->setText(info);
     label_info->setWordWrap(true);
     label_info->setAlignment(Qt::AlignCenter);
     label_info->adjustSize();

@@ -1,4 +1,10 @@
-ukui-about (1.0.0-3kylin10) v100; urgency=medium
+ukui-about (1.0.0-3kylin11) v100; urgency=medium
+
+  * info error 
+
+ -- hepuyao <hepuyao@kylinos.cn>  Tue, 23 Jun 2020 10:32:49 +0800
+
+ukui-about (1.0.0-3kylin10) v101; urgency=medium
 
   * 解决info字符被截断的bug
 
