@@ -357,6 +357,7 @@ void About::mate_about_run(void)
 
     label_copyright=new QLabel(this);
     label_copyright->setText(copy_right);
+    label_copyright->setWordWrap(true);
     label_copyright->setAlignment(Qt::AlignCenter);
     label_copyright->adjustSize();
     label_copyright->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height()+label_info->height(),ABOUT_WIDGET_WIDTH,label_copyright->height());
