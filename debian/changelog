@@ -1,6 +1,6 @@
-ukui-about (1.0.0-3kylin12) v100; urgency=medium
+ukui-about (1.0.0-3kylin14) v100; urgency=medium
 
-  * high dpi
+  * widget center show
 
  -- hepuyao <hepuyao@kylinos.cn>  Tue, 30 Jun 2020 11:59:03 +0800
 

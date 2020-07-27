@@ -1,18 +1,30 @@
 #include "about.h"
 #include <QApplication>
+#include <QDesktopWidget>
 #include <QTranslator>
 #include <QDebug>
 #include <QStandardPaths>
 #include <fcntl.h>
 #include <syslog.h>
+#include <X11/Xlib.h>
 
 
 int main(int argc, char *argv[])
 {
-#if (QT_VERSION >= QT_VERSION_CHECK(5,6,0))
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-#endif
+    Display *display = XOpenDisplay(NULL);
+    Screen *scrn = DefaultScreenOfDisplay(display);
+    if(scrn == nullptr) {
+        return 0;
+    }
+    int width = scrn->width;
+//    QApplication app(argc,argv);
+    if (width >= 2560) {
+    #if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
+        QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+        QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    #endif
+    }
+
     QApplication a(argc, argv);
 
     //Singleton

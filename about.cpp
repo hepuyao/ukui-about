@@ -1,6 +1,8 @@
 #include "about.h"
+#include <QApplication>
 #include <QProcess>
 #include <QDebug>
+#include <QDesktopWidget>
 #include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -369,6 +371,9 @@ void About::mate_about_run(void)
     label_website->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height()+label_info->height()+label_copyright->height(),ABOUT_WIDGET_WIDTH,label_website->height());
     qDebug()<<"";
     this->setFixedSize(ABOUT_WIDGET_WIDTH,LEAVE_BLANK_HIGHT*2+label_logo->height()+label_info->height()+label_copyright->height()+label_website->height());
+
+    QDesktopWidget* desktop = QApplication::desktop(); // =qApp->desktop();也可以
+move((desktop->width() - this->width())/2, (desktop->height() - this->height())/2);
 }
 
 
