@@ -1,3 +1,9 @@
+ukui-about (1.0.0-4) v100; urgency=medium
+
+  * 在开始菜单中隐藏
+
+ -- hepuyao <hepuyao@kylinos.cn>  Tue, 08 Sep 2020 15:11:46 +0800
+
 ukui-about (1.0.0-3kylin14) v100; urgency=medium
 
   * widget center show
