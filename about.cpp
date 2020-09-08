@@ -372,8 +372,11 @@ void About::mate_about_run(void)
     qDebug()<<"";
     this->setFixedSize(ABOUT_WIDGET_WIDTH,LEAVE_BLANK_HIGHT*2+label_logo->height()+label_info->height()+label_copyright->height()+label_website->height());
 
+    /*无法解决双屏问题
     QDesktopWidget* desktop = QApplication::desktop(); // =qApp->desktop();也可以
-move((desktop->width() - this->width())/2, (desktop->height() - this->height())/2);
+    move((desktop->width() - this->width())/2, (desktop->height() - this->height())/2);
+    */
+
 }
 
 

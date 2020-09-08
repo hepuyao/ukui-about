@@ -1,3 +1,9 @@
+ukui-about (1.0.0-5) v100; urgency=medium
+
+  * 连接拓展屏的情况下，主界面显示在主屏中央
+
+ -- kylin <kylin@surface>  Tue, 08 Sep 2020 16:08:33 +0800
+
 ukui-about (1.0.0-4) v100; urgency=medium
 
   * 在开始菜单中隐藏
