@@ -1,15 +1,15 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # coding: utf-8
 
 import os
-import ConfigParser
+import configparser
 from gi.repository import GLib
 import sys
 
 #print(sys.argv[0])          #sys.argv[0] 类似于shell中的$0,但不是脚本名称，而是脚本的路径   
 #print(sys.argv[1])          #sys.argv[1] 表示传入的第一个参数
 #获取版本和授权相关信息
-cf = ConfigParser.ConfigParser()
+cf = configparser.ConfigParser()
 info = ""
 text = ""
 kylin_version = ""
