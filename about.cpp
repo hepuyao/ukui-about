@@ -207,7 +207,7 @@ void About::mate_about_run(void)
     }
 
 //    if(is_business_version()) //getSystemInfo.py里面已处理
-    version = get_lsb_release_value("4.0.2");
+    version = get_lsb_release_value("DISTRIB_RELEASE");
     if (0 == access(KYINFO_FILE, F_OK)&&0==access(LICENSE_FILE, F_OK))
     {
         FILE *kyinfoFd,*licenseFD;
