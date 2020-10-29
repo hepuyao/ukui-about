@@ -19,7 +19,7 @@ phoneTips = ""
 versionTip = ""
 authorizationTip = ""
 env_dist = os.environ
-print env_dist['LANG']
+print (env_dist['LANG'])
 lang = env_dist['LANG']
 if os.path.exists("/etc/.kyinfo"):
     cf.read("/etc/.kyinfo")
@@ -34,13 +34,13 @@ if os.path.exists("/etc/.kyinfo"):
         info_version = "授权版本：" + str_version
         info_customer = "客户单位：" + str_customer
         info_term = "技术服务截止日期：" + str_term
-	phoneTips = "温馨提示：如有问题请咨询销售\n" + "咨询电话：400-089-1870"
+        phoneTips = "温馨提示：如有问题请咨询销售\n" + "咨询电话：400-089-1870"
     else:
         info_key = "Service serial number：" + str_key
         info_version = "Authorized version：" + str_version
         info_customer = "Customer company：" + str_customer
         info_term = "Technical service deadline：" + str_term
-	phoneTips = "warm tip: if you have any questions, please consult the sales department \n" + "hotline: 400-089-1870"
+        phoneTips = "warm tip: if you have any questions, please consult the sales department \n" + "hotline: 400-089-1870"
     str_time = cf.get("dist", "time")
     tmp = str_time[2:4] + str_time[5:7] + str_time[8:10]
 
@@ -58,9 +58,9 @@ if os.path.exists("/etc/.kyinfo"):
     if os.path.exists("/etc/.kylin-update"):
     	if lang.startswith("zh_CN"):
             update_info = "更新状态：已更新" + info_build + "补丁集\n"
-        else:
+    	else:
             update_info = "Update status: updated" + info_build + "patch set \ n"
-        info_build = ""
+            info_build = ""
     else:
         info_build = info_build + "\n"
 	
@@ -80,9 +80,9 @@ else:
         if line.startswith("DISTRIB_RELEASE"):
             version = line[16:len(line)-1]
         if lang.startswith("zh_CN"):
-	    versionTip = "银河麒麟社区版\n"
-	    authorizationTip = "当前版本未授权\n"
-	else:
+            versionTip = "银河麒麟社区版\n"
+            authorizationTip = "当前版本未授权\n"
+        else:
             versionTip = "YHkylin community\n"
             authorizationTip = "current version is not authorized\n"
     if len(lines) >= 6 and lines[5].strip().endswith("community"):
