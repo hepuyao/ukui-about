@@ -1,3 +1,15 @@
+ukui-about (1.0.0-7) v101; urgency=medium
+
+  *支持vnc远程桌面
+
+ -- hepuyao <hepuyao@kylinos.cn>  Tue, 03 Nov 2020 15:54:32 +0800
+
+ukui-about (1.0.0-6) v101; urgency=medium
+
+  * 更新脚本及显示详细版权信息
+
+ -- hepuyao <hepuyao@kylinos.cn>  Mon, 14 Sep 2020 09:13:20 +0800
+
 ukui-about (1.0.0-5) v100; urgency=medium
 
   * 连接拓展屏的情况下，主界面显示在主屏中央
