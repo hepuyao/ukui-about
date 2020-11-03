@@ -5,10 +5,6 @@
 #include <QString>
 #include <QLabel>
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class About; }
-QT_END_NAMESPACE
-
 class About : public QWidget
 {
     Q_OBJECT
@@ -18,10 +14,14 @@ public:
     ~About();
 
 private:
-    Ui::About *ui;
+    void getIconCopyrightNameInfo();
+    void getKernelVersionInfo();
+    void getVersionActivation();
+
     void disPlay();
     void mate_about_run();
     QLabel *label_logo;
+    QLabel *label_title;
     QLabel *label_info;
     QLabel *label_copyright;
     QLabel *label_website;
@@ -37,6 +37,11 @@ private:
             "Copyright © 1997-2011 GNOME developers\n"
             "Copyright © 2011 Perberos\n"
             "Copyright © 2012-2015 MATE developers";
+
+        //主界面显示的版权信息
+        QString copy_right;
+        //主界面显示的图标信息
+        QString icon_name;
 
         /* Increment comments_count if you add other comments. This will be
          * used to choose a random comment. */

@@ -50,7 +50,6 @@ extern "C" {
 #define ABOUT_WIDGET_WIDTH  700
 #define LOGO_WIDTH          378
 #define LOGO_HIGTH          140
-char licenseTerm[BUFF_SIZE] = {0};
 
 #ifndef mate_gettext
 #define mate_gettext(package, locale, codeset) \
@@ -63,9 +62,12 @@ GError *error = NULL;
 char homefile[80], info[1024];
 int fd;
 char *name= NULL;
-char *copy_right =NULL;
-char *icon_name = NULL;
+//kernel_name 是内核版本
+gchar *kernel_name = NULL;
+//version 是系统版本代号
+gchar *version = NULL;
 char kyinfoTerm[BUFF_SIZE] = {0};
+char licenseTerm[BUFF_SIZE] = {0};
 
 
 int match_systemname(char *name)
@@ -76,7 +78,7 @@ int match_systemname(char *name)
     fp = fopen(LSB_RELEASE, "r");
     if (!fp)
     {
-    printf("open /etc/lsb-release file error!");
+        printf("open /etc/lsb-release file error!");
         return -1;
     }
     fgets(line, LINE_BUFF_SIZE_128, fp);
@@ -84,7 +86,7 @@ int match_systemname(char *name)
     strncpy(substr, line + 11, strlen(line) - 11);
     if (strcmp(substr, name) == 0)
     {
-    return 0;
+        return 0;
     }
     return -1;
 }
@@ -96,15 +98,15 @@ gchar* get_lsb_release_value(char *p_key)
     fp = fopen(LSB_RELEASE, "r");
     if (!fp)
     {
-    printf("open /etc/lsb-release file error!");
-//        return -1;
+        printf("open /etc/lsb-release file error!");
+        //        return -1;
     }
     while(NULL != fgets(line, LINE_BUFF_SIZE_32, fp))
     {
         char tmp_key[LINE_BUFF_SIZE_64] = {0};
         char tmp_value[LINE_BUFF_SIZE_64] = {0};
         sscanf(line,"%[^=]=%s",tmp_key,tmp_value);
-//        qDebug()<<"get_lsb_release_value   tmp_value"<<tmp_value   <<"p_key : "<<p_key;
+        //        qDebug()<<"get_lsb_release_value   tmp_value"<<tmp_value   <<"p_key : "<<p_key;
         if(0 == strcmp(tmp_key,p_key))
         {
             fclose(fp);
@@ -158,9 +160,9 @@ long int string_2_time(char *str_time)
     iY = atoi(str_time);
     iM = atoi(str_time+5);
     iD = atoi(str_time+8);
-//    iH = atoi(str_time+11);
-//    iMin = atoi(str_time+14);
-//    iS = atoi(str_time+17);
+    //    iH = atoi(str_time+11);
+    //    iMin = atoi(str_time+14);
+    //    iS = atoi(str_time+17);
 
     stm.tm_year=iY-1900;
     stm.tm_mon=iM-1;
@@ -189,24 +191,18 @@ About::~About()
 void About::mate_about_run(void)
 {
     GError *error = NULL;
-    char homefile[80], info[1024];
     int fd;
     char *name= NULL;
-    QString copy_right;
-    char *icon_name = NULL;
-    char kyinfoTerm[BUFF_SIZE] = {0};
-    char licenseTerm[BUFF_SIZE] = {0};
     memset(homefile, 0, 80);
     memset(info, 0, 1024);
-    gchar *kernel_name = NULL;
-    gchar *version = NULL;
-    struct utsname uts;
-    if (uname(&uts) >= 0) {
-        kernel_name = g_strdup(uts.release);
-        printf("VERSION:[%s], RELEASE:[%s]\n", uts.version, kernel_name);
-    }
+}
 
-//    if(is_business_version()) //getSystemInfo.py里面已处理
+/*
+ * 获取当前系统版本激活情况
+*/
+void About::getVersionActivation()
+{
+    //    if(is_business_version()) //getSystemInfo.py里面已处理
     version = get_lsb_release_value("DISTRIB_RELEASE");
     if (0 == access(KYINFO_FILE, F_OK)&&0==access(LICENSE_FILE, F_OK))
     {
@@ -262,7 +258,7 @@ void About::mate_about_run(void)
                 sprintf(homefile, "%s/.info", getenv("HOME"));
                 fd = open(homefile, O_RDONLY);
                 read(fd, info, sizeof(info));
-//                close(fd);
+                //                close(fd);
             }
             if(time(&t) > string_2_time(kyinfoTerm))//试用已过期
             {
@@ -276,7 +272,7 @@ void About::mate_about_run(void)
                 sprintf(homefile, "%s/.info", getenv("HOME"));
                 fd = open(homefile, O_RDONLY);
                 read(fd, info, sizeof(info));
-//                close(fd);
+                //                close(fd);
             }
         }
     }
@@ -288,10 +284,36 @@ void About::mate_about_run(void)
             sprintf(homefile, "%s/.info", getenv("HOME"));
             fd = open(homefile, O_RDONLY);
             read(fd, info, sizeof(info));
-//            close(fd);
+            //            close(fd);
         }
     }
+}
+/*
+ * 获取系统内核及版本号
+*/
+void About::getKernelVersionInfo()
+{
+    /*
+     * utsname
+     * 获取当前内核名称和其它信息。
+    */
+    struct utsname uts;
+    qDebug()<<"uts"<<uname(&uts);
+    /*
+     * Linux uname（英文全拼：unix name）命令用于显示系统信息。
+     * uname 可显示电脑以及操作系统的相关信息
+    */
+    if (uname(&uts) >= 0) {
+        kernel_name = g_strdup(uts.release);
+        qDebug()<<"uts.version  : "<<uts.version <<"        kernel_name :"<<kernel_name;
+    }
+}
 
+/*
+ * 获取主界面图标，copyright，名称等信息
+*/
+void About::getIconCopyrightNameInfo()
+{
     if(TRUE == is_pks_version())
     {
 
@@ -306,7 +328,7 @@ void About::mate_about_run(void)
                 name = "Kylin Desktop PKS";
             }
             g_free(kernel_name);
-            kernel_name = NULL;    setWindowIcon(QIcon::fromTheme("distributor-logo-kylin"));
+            kernel_name = NULL;
         }
         else
         {
@@ -334,7 +356,30 @@ void About::mate_about_run(void)
         icon_name = "/usr/share/mate-about/neokylin.png";
         copy_right = tr("All rights reserved by 2009-2020 NeoKylinOS. all rights reserved.\n NeoKylin version 10 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.");
     }
+}
 
+/*
+ * ukui-about 界面主窗口显示
+*/
+void About::disPlay()
+{
+    mate_about_run();
+
+    getVersionActivation();
+    getIconCopyrightNameInfo();
+    getKernelVersionInfo();
+
+    setWindowTitle(tr("about Kylin"));
+
+    /*
+     * 将label_logo label_info label_copyright label_website
+     * 通过setGeometry在主窗口显示
+    */
+
+    /*
+     * label_logo
+     * 为主界面显示logo
+    */
     QPixmap kylinicon(icon_name);
     kylinicon=kylinicon.scaled(LOGO_WIDTH,LOGO_HIGTH);
     label_logo=new QLabel(this);
@@ -343,6 +388,23 @@ void About::mate_about_run(void)
     label_logo->adjustSize();
     label_logo->setGeometry(0,LEAVE_BLANK_HIGHT,ABOUT_WIDGET_WIDTH,label_logo->height());
 
+    /*
+     * label_title
+     * 系统版本信息
+    */
+    label_title=new QLabel(this);
+    label_title->setText(QString("银河麒麟桌面操作系统 %1").arg(version));
+    label_title->setWordWrap(true);
+    label_title->setAlignment(Qt::AlignCenter);
+    label_title->adjustSize();
+    QFont font_title("Microsoft YaHei", 17, 75);
+    label_title->setFont(font_title);
+    label_title->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height(),ABOUT_WIDGET_WIDTH,label_title->height());
+
+    /*
+     * label_info
+     * 系统版本信息
+    */
     label_info=new QLabel(this);
     label_info->setText(info);
     label_info->setWordWrap(true);
@@ -352,37 +414,29 @@ void About::mate_about_run(void)
     /* 使用QFont的setPointSize，此时字体的大小会跟随DPI改变而改变。
      * 使用QFont的setPixelSize，此时字体的大小不会随DPI的改变而发生变化。
      * 但两者都存在的问题是遇到无info文字被遮挡的问题
-　　　*/
-//    font.setPointSize(20);
+*/
     label_info->setFont(font);
-    label_info->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height(),ABOUT_WIDGET_WIDTH,label_info->height());
+    label_info->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height()+label_title->height(),ABOUT_WIDGET_WIDTH,label_info->height());
 
+    /*
+     * label_copyright
+     * 版权信息
+    */
     label_copyright=new QLabel(this);
     label_copyright->setText(copy_right);
     label_copyright->setWordWrap(true);
     label_copyright->setAlignment(Qt::AlignCenter);
     label_copyright->adjustSize();
-    label_copyright->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height()+label_info->height(),ABOUT_WIDGET_WIDTH,label_copyright->height());
+    label_copyright->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height()+label_title->height()+label_info->height(),ABOUT_WIDGET_WIDTH,label_copyright->height());
 
+    /*
+     * label_website 关于银河麒麟的网页跳转
+    */
     label_website=new QLabel(this);
     label_website->setOpenExternalLinks(true);
     label_website->setText(QString::fromLocal8Bit("<a style='color: blue;' href = http://www.kylinos.cn> http://www.kylinos.cn</a>"));
     label_website->setAlignment(Qt::AlignCenter);
-    label_website->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height()+label_info->height()+label_copyright->height(),ABOUT_WIDGET_WIDTH,label_website->height());
-    qDebug()<<"";
-    this->setFixedSize(ABOUT_WIDGET_WIDTH,LEAVE_BLANK_HIGHT*2+label_logo->height()+label_info->height()+label_copyright->height()+label_website->height());
-
-    /*无法解决双屏问题
-    QDesktopWidget* desktop = QApplication::desktop(); // =qApp->desktop();也可以
-    move((desktop->width() - this->width())/2, (desktop->height() - this->height())/2);
-    */
-
-}
-
-
-void About::disPlay()
-{
-    mate_about_run();
-    setWindowTitle(tr("about Kylin"));
+    label_website->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height()+label_title->height()+label_info->height()+label_copyright->height(),ABOUT_WIDGET_WIDTH,label_website->height());
+    this->setFixedSize(ABOUT_WIDGET_WIDTH,LEAVE_BLANK_HIGHT*2+label_logo->height()+label_title->height()+label_info->height()+label_copyright->height()+label_website->height());
 }
 
