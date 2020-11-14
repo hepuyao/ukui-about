@@ -397,7 +397,7 @@ void About::disPlay()
     label_title->setWordWrap(true);
     label_title->setAlignment(Qt::AlignCenter);
     label_title->adjustSize();
-    QFont font_title("Microsoft YaHei", 17, 75);
+    QFont font_title("Microsoft YaHei", 14, 75);
     label_title->setFont(font_title);
     label_title->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height(),ABOUT_WIDGET_WIDTH,label_title->height());
 
@@ -411,6 +411,7 @@ void About::disPlay()
     label_info->setAlignment(Qt::AlignCenter);
     label_info->adjustSize();
     QFont font;
+    font.setPointSize(11);
     /* 使用QFont的setPointSize，此时字体的大小会跟随DPI改变而改变。
      * 使用QFont的setPixelSize，此时字体的大小不会随DPI的改变而发生变化。
      * 但两者都存在的问题是遇到无info文字被遮挡的问题
@@ -427,6 +428,9 @@ void About::disPlay()
     label_copyright->setWordWrap(true);
     label_copyright->setAlignment(Qt::AlignCenter);
     label_copyright->adjustSize();
+    QFont font_copright;
+    font_copright.setPointSize(11);
+    label_copyright->setFont(font_copright);
     label_copyright->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height()+label_title->height()+label_info->height(),ABOUT_WIDGET_WIDTH,label_copyright->height());
 
     /*
@@ -436,6 +440,9 @@ void About::disPlay()
     label_website->setOpenExternalLinks(true);
     label_website->setText(QString::fromLocal8Bit("<a style='color: blue;' href = http://www.kylinos.cn> http://www.kylinos.cn</a>"));
     label_website->setAlignment(Qt::AlignCenter);
+    QFont font_webkit;
+    font_webkit.setPointSize(11);
+    label_website->setFont(font_webkit);
     label_website->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height()+label_title->height()+label_info->height()+label_copyright->height(),ABOUT_WIDGET_WIDTH,label_website->height());
     this->setFixedSize(ABOUT_WIDGET_WIDTH,LEAVE_BLANK_HIGHT*2+label_logo->height()+label_title->height()+label_info->height()+label_copyright->height()+label_website->height());
 }
