@@ -177,7 +177,7 @@ long int string_2_time(char *str_time)
 }
 
 About::About(QWidget *parent)
-    : QWidget(parent)
+    : QMainWindow(parent)
 {
     setWindowIcon(QIcon::fromTheme("distributor-logo-kylin"));
     disPlay();
@@ -388,6 +388,7 @@ void About::disPlay()
     label_logo->adjustSize();
     label_logo->setGeometry(0,LEAVE_BLANK_HIGHT,ABOUT_WIDGET_WIDTH,label_logo->height());
 
+
     /*
      * label_title
      * 系统版本信息
@@ -395,11 +396,12 @@ void About::disPlay()
     label_title=new QLabel(this);
     label_title->setText(QString("银河麒麟桌面操作系统 %1").arg(version));
     label_title->setWordWrap(true);
-    label_title->setAlignment(Qt::AlignCenter);
-    label_title->adjustSize();
-    QFont font_title("Microsoft YaHei", 14, 75);
-    label_title->setFont(font_title);
-    label_title->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height(),ABOUT_WIDGET_WIDTH,label_title->height());
+    label_title->setAlignment(Qt::AlignLeft);
+//    label_title->adjustSize();
+//    QFont font_title("Microsoft YaHei", 14, 75);
+//    label_title->setFont(font_title);
+//    label_title->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height(),ABOUT_WIDGET_WIDTH,label_title->height());
+//    label_title->setFixedSize(ABOUT_WIDGET_WIDTH,label_title->height());
 
     /*
      * label_info
@@ -408,16 +410,18 @@ void About::disPlay()
     label_info=new QLabel(this);
     label_info->setText(info);
     label_info->setWordWrap(true);
-    label_info->setAlignment(Qt::AlignCenter);
-    label_info->adjustSize();
-    QFont font;
-    font.setPointSize(11);
-    /* 使用QFont的setPointSize，此时字体的大小会跟随DPI改变而改变。
-     * 使用QFont的setPixelSize，此时字体的大小不会随DPI的改变而发生变化。
-     * 但两者都存在的问题是遇到无info文字被遮挡的问题
-*/
-    label_info->setFont(font);
-    label_info->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height()+label_title->height(),ABOUT_WIDGET_WIDTH,label_info->height());
+    label_info->setAlignment(Qt::AlignLeft);
+//    label_info->adjustSize();
+//    QFont font;
+//    font.setPointSize(11);
+//    /* 使用QFont的setPointSize，此时字体的大小会跟随DPI改变而改变。
+//     * 使用QFont的setPixelSize，此时字体的大小不会随DPI的改变而发生变化。
+//     * 但两者都存在的问题是遇到无info文字被遮挡的问题
+//*/
+//    label_info->setFont(font);
+////    label_info->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height()+label_title->height(),ABOUT_WIDGET_WIDTH,label_info->height());
+//    label_info->setFixedSize(ABOUT_WIDGET_WIDTH,label_info->height());
+//    label_info->setMinimumSize(QSize(ABOUT_WIDGET_WIDTH,150));
 
     /*
      * label_copyright
@@ -426,12 +430,14 @@ void About::disPlay()
     label_copyright=new QLabel(this);
     label_copyright->setText(copy_right);
     label_copyright->setWordWrap(true);
-    label_copyright->setAlignment(Qt::AlignCenter);
-    label_copyright->adjustSize();
-    QFont font_copright;
-    font_copright.setPointSize(11);
-    label_copyright->setFont(font_copright);
-    label_copyright->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height()+label_title->height()+label_info->height(),ABOUT_WIDGET_WIDTH,label_copyright->height());
+    label_copyright->setAlignment(Qt::AlignLeft);
+////    label_copyright->adjustSize();
+//    QFont font_copright;
+//    font_copright.setPointSize(11);
+//    label_copyright->setFont(font_copright);
+//    //label_copyright->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height()+label_title->height()+label_info->height(),ABOUT_WIDGET_WIDTH,label_copyright->height());
+//    label_copyright->setFixedSize(ABOUT_WIDGET_WIDTH,label_copyright->height());
+
 
     /*
      * label_website 关于银河麒麟的网页跳转
@@ -439,11 +445,31 @@ void About::disPlay()
     label_website=new QLabel(this);
     label_website->setOpenExternalLinks(true);
     label_website->setText(QString::fromLocal8Bit("<a style='color: blue;' href = http://www.kylinos.cn> http://www.kylinos.cn</a>"));
-    label_website->setAlignment(Qt::AlignCenter);
-    QFont font_webkit;
-    font_webkit.setPointSize(11);
-    label_website->setFont(font_webkit);
-    label_website->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height()+label_title->height()+label_info->height()+label_copyright->height(),ABOUT_WIDGET_WIDTH,label_website->height());
-    this->setFixedSize(ABOUT_WIDGET_WIDTH,LEAVE_BLANK_HIGHT*2+label_logo->height()+label_title->height()+label_info->height()+label_copyright->height()+label_website->height());
+    label_website->setAlignment(Qt::AlignLeft);
+//    QFont font_webkit;
+//    font_webkit.setPointSize(11);
+//    label_website->setFont(font_webkit);
+//    //label_website->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height()+label_title->height()+label_info->height()+label_copyright->height(),ABOUT_WIDGET_WIDTH,label_website->height());
+//    label_website->setFixedSize(ABOUT_WIDGET_WIDTH,label_website->height());
+
+    QWidget *verticalLayoutWidget;
+    verticalLayoutWidget=new QWidget(this);
+    QVBoxLayout *verticalLayout;
+    verticalLayout = new QVBoxLayout(verticalLayoutWidget);
+
+
+    verticalLayout->addWidget(label_title);
+    verticalLayout->addWidget(label_info);
+    verticalLayout->addWidget(label_copyright);
+    verticalLayout->addWidget(label_website);
+
+    QScrollArea *scrollArea = new QScrollArea(this);
+    scrollArea->setWidget(verticalLayoutWidget);
+    scrollArea->setFixedWidth(400);
+    scrollArea->setMinimumHeight(250);
+    scrollArea->move(100,label_logo->height()+10);
+
+//    this->setFixedSize(ABOUT_WIDGET_WIDTH,LEAVE_BLANK_HIGHT*2+label_logo->height()+label_title->height()+label_info->height()+label_copyright->height()+label_website->height()+100);
+    this->setFixedSize(600,400);
 }
 

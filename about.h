@@ -4,8 +4,11 @@
 #include <QWidget>
 #include <QString>
 #include <QLabel>
+#include <QVBoxLayout>
+#include <QScrollArea>
+#include <QMainWindow>
 
-class About : public QWidget
+class About : public QMainWindow
 {
     Q_OBJECT
 
