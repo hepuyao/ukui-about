@@ -1,3 +1,9 @@
+ukui-about (1.0.0-10) v101; urgency=medium
+
+  * 更新v10.1名称为v10专业版
+
+ -- hepuyao <hepuyao@kylinos.cn>  Wed, 23 Dec 2020 17:12:12 +0800
+
 ukui-about (1.0.0-7) v101; urgency=medium
 
   *支持vnc远程桌面

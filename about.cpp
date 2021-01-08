@@ -393,7 +393,11 @@ void About::disPlay()
      * 系统版本信息
     */
     label_title=new QLabel(this);
-    label_title->setText(QString("银河麒麟桌面操作系统 %1").arg(version));
+    if(getOsRelease()){
+        label_title->setText(QString(tr("Kylin Desktop Operating System %1 Professional")).arg(version));
+    }else{
+        label_title->setText(QString(tr("Kylin Desktop Operating System %1")).arg(version));
+    }
     label_title->setWordWrap(true);
     label_title->setAlignment(Qt::AlignCenter);
     label_title->adjustSize();
@@ -447,3 +451,18 @@ void About::disPlay()
     this->setFixedSize(ABOUT_WIDGET_WIDTH,LEAVE_BLANK_HIGHT*2+label_logo->height()+label_title->height()+label_info->height()+label_copyright->height()+label_website->height());
 }
 
+//获取系统版本,若为ubuntu则取消休眠功能
+bool About::getOsRelease()
+{
+    QFile file("/etc/os-release");
+    if (!file.open(QIODevice::ReadOnly)) qDebug() << "Read file Failed.";
+    while (!file.atEnd()) {
+        QByteArray line = file.readLine();
+        QString str(line);
+        if (str.contains("VERSION=")){
+            qDebug()<<"**********"<<str.contains("Professional");
+            return str.contains("Professional");
+        }
+    }
+    return false;
+}

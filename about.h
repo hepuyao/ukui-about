@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QString>
 #include <QLabel>
+#include <QFile>
 
 class About : public QWidget
 {
@@ -20,6 +21,8 @@ private:
 
     void disPlay();
     void mate_about_run();
+    bool getOsRelease();
+
     QLabel *label_logo;
     QLabel *label_title;
     QLabel *label_info;
