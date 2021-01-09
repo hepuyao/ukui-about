@@ -409,8 +409,10 @@ void About::disPlay()
      * label_info
      * 系统版本信息
     */
+    QString info_str(info);
+    if(getOsRelease())    info_str.replace("Kylin V10",tr("Kylin V10 Professional"));
     label_info=new QLabel(this);
-    label_info->setText(info);
+    label_info->setText(info_str);
     label_info->setWordWrap(true);
     label_info->setAlignment(Qt::AlignCenter);
     label_info->adjustSize();
@@ -451,7 +453,7 @@ void About::disPlay()
     this->setFixedSize(ABOUT_WIDGET_WIDTH,LEAVE_BLANK_HIGHT*2+label_logo->height()+label_title->height()+label_info->height()+label_copyright->height()+label_website->height());
 }
 
-//获取系统版本,若为ubuntu则取消休眠功能
+//通过 os-release 获取系统版本
 bool About::getOsRelease()
 {
     QFile file("/etc/os-release");

@@ -40,6 +40,11 @@ NeoKylin V10版及其用户界面受中国及其它国家地区的商标法和�
         <source>Kylin Desktop Operating System %1</source>
         <translation>银河麒麟桌面操作系统 %1</translation>
     </message>
+    <message>
+        <location filename="../about.cpp" line="414"/>
+        <source>Kylin V10 Professional</source>
+        <translation>Kylin V10 专业版</translation>
+    </message>
 </context>
 <context>
     <name>Widget</name>

@@ -1,3 +1,9 @@
+ukui-about (1.0.0-11) v101; urgency=medium
+
+  * 通过判断os-release的版本号 判断是否为v10 专业版
+
+ -- hepuyao <hepuyao@kylinos.cn>  Sat, 09 Jan 2021 11:16:53 +0800
+
 ukui-about (1.0.0-10) v101; urgency=medium
 
   * 更新v10.1名称为v10专业版
