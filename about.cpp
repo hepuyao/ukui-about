@@ -336,25 +336,25 @@ void About::getIconCopyrightNameInfo()
         }
 
         icon_name = "/usr/share/ukui/kylin.png";
-        copy_right = tr("All rights reserved by 2009-2020 KylinOS. all rights reserved.\n Kylin %1 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.").arg(version);
+        copy_right = tr("All rights reserved by 2009-2021 KylinOS. all rights reserved.\n Kylin %1 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.").arg(version);
     }
     else if (match_systemname("Kylin\n") == 0)
     {
         name = "Kylin";
         icon_name = "/usr/share/ukui/kylin.png";
-        copy_right = tr("All rights reserved by 2009-2020 KylinOS. all rights reserved.\n Kylin %1 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.").arg(version);
+        copy_right = tr("All rights reserved by 2009-2021 KylinOS. all rights reserved.\n Kylin %1 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.").arg(version);
     }
     else if (match_systemname("YHKylin\n") == 0)
     {
         name = "YHKylin";
         icon_name = "/usr/share/mate-about/yhkylin.png";
-        copy_right = tr("All rights reserved by 2009-2020 YHKylinOS. all rights reserved. \n YHKylin version 4 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.");
+        copy_right = tr("All rights reserved by 2009-2021 YHKylinOS. all rights reserved. \n YHKylin version 4 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.");
     }
     else if (match_systemname("NeoKylin\n") == 0)
     {
         name = "NeoKylin";
         icon_name = "/usr/share/mate-about/neokylin.png";
-        copy_right = tr("All rights reserved by 2009-2020 NeoKylinOS. all rights reserved.\n NeoKylin version 10 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.");
+        copy_right = tr("All rights reserved by 2009-2021 NeoKylinOS. all rights reserved.\n NeoKylin version 10 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.");
     }
 }
 
