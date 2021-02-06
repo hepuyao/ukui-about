@@ -204,8 +204,9 @@ void About::getVersionActivation()
 {
     //    if(is_business_version()) //getSystemInfo.py里面已处理
     version = get_lsb_release_value("DISTRIB_RELEASE");
-    if (0 == access(KYINFO_FILE, F_OK)&&0==access(LICENSE_FILE, F_OK))
+    if (0 == access(KYINFO_FILE, F_OK)&&0==access(LICENSE_FILE, F_OK) && fopen(LICENSE_FILE,"r") != NULL)
     {
+        qDebug()<<"getVersionActivation access(KYINFO_FILE, F_OK) ";
         FILE *kyinfoFd,*licenseFD;
         char line[BUFF_SIZE] = {0};
         int len;
