@@ -1,3 +1,9 @@
+ukui-about (1.0.0-14) v101; urgency=medium
+
+  * 解决 /etc/LICENSE 文件没有读权限的时候的异常处理
+
+ --  <hepuyao@kylinos.cn>  Sat, 06 Feb 2021 16:21:15 +0800
+
 ukui-about (1.0.0-11) v101; urgency=medium
 
   * 通过判断os-release的版本号 判断是否为v10 专业版
