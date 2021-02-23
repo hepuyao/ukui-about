@@ -38,6 +38,8 @@ HEADERS += \
 TRANSLATIONS += \
     resource/ukui-about_zh_CN.ts
 
+#translate cmd : lupdate ukui-about.pro -ts resource/ukui-about_zh_CN.ts
+
 #qm_file.path = $${PREFIX}/resource/
 #INSTALLS += \
 #    resource/ukui-about_zh_CN.ts qm_file

@@ -70,6 +70,8 @@ char kyinfoTerm[BUFF_SIZE] = {0};
 char licenseTerm[BUFF_SIZE] = {0};
 
 
+QString getLsbRealse(QString key);
+
 int match_systemname(char *name)
 {
     FILE *fp;
@@ -395,7 +397,12 @@ void About::disPlay()
     */
     label_title=new QLabel(this);
     if(getOsRelease()){
-        label_title->setText(QString(tr("Kylin Desktop Operating System %1 Professional")).arg(version));
+        if(getLsbRealse(DISTRIB_VERSION_MODE).contains("gf")){
+            qDebug()<<"1111111";
+            label_title->setText(QString(tr("Kylin Desktop Operating System %1 Professional (%2)")).arg(version).arg(tr("GF")));
+        }else{
+            label_title->setText(QString(tr("Kylin Desktop Operating System %1 Professional")).arg(version));
+        }
     }else{
         label_title->setText(QString(tr("Kylin Desktop Operating System %1")).arg(version));
     }
@@ -468,4 +475,20 @@ bool About::getOsRelease()
         }
     }
     return false;
+}
+
+QString getLsbRealse(QString key)
+{
+    if(key == DISTRIB_VERSION_MODE){
+        QFile file("/etc/lsb-release");
+        if (!file.open(QIODevice::ReadOnly)) qDebug() << "Read file Failed.";
+        while (!file.atEnd()) {
+            QByteArray line = file.readLine();
+            QString str(line);
+            if (str.contains(DISTRIB_VERSION_MODE)){
+		qDebug()<<"gf8*****:"<<str.remove("DISTRIB_VERSION_MODE=");
+                return str.remove("DISTRIB_VERSION_MODE=");
+            }
+        }
+    }
 }
