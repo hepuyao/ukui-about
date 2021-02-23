@@ -1,3 +1,9 @@
+ukui-about (1.0.0-15) v101; urgency=medium
+
+  * 增加对国防版本的判断及显示
+
+ -- hepuyao <hepuyao@kylinos.cn>  Tue, 23 Feb 2021 13:52:38 +0800
+
 ukui-about (1.0.0-14) v101; urgency=medium
 
   * 解决 /etc/LICENSE 文件没有读权限的时候的异常处理
