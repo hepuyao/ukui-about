@@ -205,7 +205,8 @@ void About::mate_about_run(void)
 void About::getVersionActivation()
 {
     //    if(is_business_version()) //getSystemInfo.py里面已处理
-    version = get_lsb_release_value("DISTRIB_RELEASE");
+//    version = get_lsb_release_value("DISTRIB_DESCRIPTION");
+    version="V10";
     if (0 == access(KYINFO_FILE, F_OK)&&0==access(LICENSE_FILE, F_OK) && fopen(LICENSE_FILE,"r") != NULL)
     {
         qDebug()<<"getVersionActivation access(KYINFO_FILE, F_OK) ";
@@ -397,9 +398,8 @@ void About::disPlay()
     */
     label_title=new QLabel(this);
     if(getOsRelease()){
-        if(getLsbRealse(DISTRIB_VERSION_MODE).contains("gf")){
-            qDebug()<<"1111111";
-            label_title->setText(QString(tr("Kylin Desktop Operating System %1 Professional (%2)")).arg(version).arg(tr("GF")));
+        if(getCommissionVersion()=="gf"){
+            label_title->setText(QString(tr("Kylin Desktop Operating System %1 %2")).arg(version).arg(tr("GF")));
         }else{
             label_title->setText(QString(tr("Kylin Desktop Operating System %1 Professional")).arg(version));
         }
@@ -419,6 +419,10 @@ void About::disPlay()
     */
     QString info_str(info);
     if(getOsRelease())    info_str.replace("Kylin V10",tr("Kylin V10 Professional"));
+    if(getCommissionVersion()=="gf") {
+        qDebug()<<"**"<<info_str;
+        info_str.replace("Kylin V10 专业版",tr("Kylin V10 国防版"));
+    }
     label_info=new QLabel(this);
     label_info->setText(info_str);
     label_info->setWordWrap(true);
@@ -470,14 +474,15 @@ bool About::getOsRelease()
         QByteArray line = file.readLine();
         QString str(line);
         if (str.contains("VERSION=")){
-            qDebug()<<"**********"<<str.contains("Professional");
-            return str.contains("Professional");
+            if(str.contains("Professional") || str.contains("SP1")){
+            return true;
+            }
         }
     }
-    return false;
+    return true;
 }
 
-QString getLsbRealse(QString key)
+QString  getLsbRealse(QString key)
 {
     if(key == DISTRIB_VERSION_MODE){
         QFile file("/etc/lsb-release");
@@ -491,4 +496,19 @@ QString getLsbRealse(QString key)
             }
         }
     }
+}
+
+QString About::getCommissionVersion()
+{
+    QFile file("/etc/lsb-release");
+    if (!file.open(QIODevice::ReadOnly)) qDebug() << "Read file Failed.";
+    while (!file.atEnd()) {
+        QByteArray line = file.readLine();
+        QString str(line);
+        if (str.contains("DISTRIB_VERSION_MODE=")){
+            if(str.contains("gf") || str.contains("GF"))
+                return "gf";
+        }
+    }
+    return "normal";
 }

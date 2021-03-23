@@ -22,6 +22,7 @@ private:
     void disPlay();
     void mate_about_run();
     bool getOsRelease();
+    QString getCommissionVersion();
 
     QLabel *label_logo;
     QLabel *label_title;
@@ -45,6 +46,9 @@ private:
         QString copy_right;
         //主界面显示的图标信息
         QString icon_name;
+
+        QString local_version;
+
 
         /* Increment comments_count if you add other comments. This will be
          * used to choose a random comment. */
