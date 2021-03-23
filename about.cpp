@@ -346,7 +346,7 @@ void About::getIconCopyrightNameInfo()
     {
         name = "Kylin";
         icon_name = "/usr/share/ukui/kylin.png";
-        copy_right = tr("Copyright © 2009-2021 KylinSoft All rights reserved.\n Kylin %1 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.").arg(version);
+        copy_right = tr("Copyright © 2009-2021 KylinSoft. All rights reserved.\n Kylin %1 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.").arg(version);
     }
     else if (match_systemname("YHKylin\n") == 0)
     {
