@@ -29,10 +29,16 @@ Kylin %1版本及其用户界面受中国及其它国家地区的商标法和其
     </message>
     <message>
         <location filename="../about.cpp" line="343"/>
-        <location filename="../about.cpp" line="349"/>
         <source>Copyright © 2009-2021 KylinSoft. All rights reserved.
  Kylin %1 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.</source>
-        <translation>版权所有 © 2009-2021 麒麟软件.保留所有权利。
+        <translation>版权所有 © 2009-2021 麒麟软件 保留所有权利。
+kylin %1版本及其用户界面受中国及其它国家地区的商标法和其它待颁布或已颁布的知识产权法保护。</translation>
+    </message>
+    <message>
+        <location filename="../about.cpp" line="349"/>
+        <source>Copyright © 2009-2021 KylinSoft All rights reserved.
+ Kylin %1 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.</source>
+        <translation>版权所有 © 2009-2021 麒麟软件 保留所有权利。
 kylin %1版本及其用户界面受中国及其它国家地区的商标法和其它待颁布或已颁布的知识产权法保护。</translation>
     </message>
     <message>
