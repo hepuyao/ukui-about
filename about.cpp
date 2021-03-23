@@ -401,7 +401,7 @@ void About::disPlay()
         if(getCommissionVersion()=="gf"){
             label_title->setText(QString(tr("Kylin Desktop Operating System %1 %2")).arg(version).arg(tr("GF")));
         }else{
-            label_title->setText(QString(tr("Kylin Desktop Operating System %1 Professional")).arg(version));
+            label_title->setText(QString(tr("Kylin Desktop Operating System %1")).arg(version));
         }
     }else{
         label_title->setText(QString(tr("Kylin Desktop Operating System %1")).arg(version));
@@ -418,7 +418,7 @@ void About::disPlay()
      * 系统版本信息
     */
     QString info_str(info);
-    if(getOsRelease())    info_str.replace("Kylin V10",tr("Kylin V10 Professional"));
+    if(getOsRelease())    info_str.replace("Kylin V10",tr("Kylin V10 SP1"));
     if(getCommissionVersion()=="gf") {
         qDebug()<<"**"<<info_str;
         info_str.replace("Kylin V10 专业版",tr("Kylin V10 国防版"));
