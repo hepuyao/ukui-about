@@ -340,13 +340,13 @@ void About::getIconCopyrightNameInfo()
         }
 
         icon_name = "/usr/share/ukui/kylin.png";
-        copy_right = tr("All rights reserved by 2009-2021 KylinOS. all rights reserved.\n Kylin %1 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.").arg(version);
+        copy_right = tr("Copyright © 2009-2021 KylinSoft. All rights reserved.\n Kylin %1 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.").arg(version);
     }
     else if (match_systemname("Kylin\n") == 0)
     {
         name = "Kylin";
         icon_name = "/usr/share/ukui/kylin.png";
-        copy_right = tr("All rights reserved by 2009-2021 KylinOS. all rights reserved.\n Kylin %1 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.").arg(version);
+        copy_right = tr("Copyright © 2009-2021 KylinSoft. All rights reserved.\n Kylin %1 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.").arg(version);
     }
     else if (match_systemname("YHKylin\n") == 0)
     {
@@ -418,7 +418,7 @@ void About::disPlay()
      * 系统版本信息
     */
     QString info_str(info);
-    if(getOsRelease())    info_str.replace("Kylin V10",tr("Kylin V10 SP1"));
+    if(getOsRelease())    info_str.replace("Kylin V10",tr("Kylin V10(SP1)"));
     if(getCommissionVersion()=="gf") {
         qDebug()<<"**"<<info_str;
         info_str.replace("Kylin V10 专业版",tr("Kylin V10 国防版"));

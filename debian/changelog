@@ -1,3 +1,9 @@
+ukui-about (1.0.0-18) v101; urgency=medium
+
+  * v10 sp1 更新显示
+
+ -- hepuyao <hepuyao@kylinos.cn>  Tue, 23 Mar 2021 16:35:44 +0800
+
 ukui-about (1.0.0-17) v101; urgency=medium
 
   * 国防版本的判断及显示
