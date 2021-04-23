@@ -1,3 +1,10 @@
+ukui-about (1.0.0-20) v101; urgency=medium
+
+  * 关于麒麟界面授权信息-版本显示部分增加对os-release的判断
+    影响域：影响关于麒麟界面的文字显示
+
+ --  <hepuyao@kylinos.cn>  Fri, 23 Apr 2021 09:43:02 +0800
+
 ukui-about (1.0.0-19) v101; urgency=medium
 
   * 版权信息更改

@@ -420,7 +420,6 @@ void About::disPlay()
     QString info_str(info);
     if(getOsRelease())    info_str.replace("Kylin V10",tr("Kylin V10(SP1)"));
     if(getCommissionVersion()=="gf") {
-        qDebug()<<"**"<<info_str;
         info_str.replace("Kylin V10 专业版",tr("Kylin V10 国防版"));
     }
     label_info=new QLabel(this);
@@ -479,7 +478,7 @@ bool About::getOsRelease()
             }
         }
     }
-    return true;
+    return false;
 }
 
 QString  getLsbRealse(QString key)
