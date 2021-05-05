@@ -1,3 +1,9 @@
+ukui-about (1.0.0-22) v101; urgency=medium
+
+  * 解决bug#51242 【任务栏|关于麒麟】关于麒麟中Kylin V10(SP1)字样显示与上面一行字部分重叠
+
+ -- hepuyao <hepuyao@kylinos.cn>  Wed, 05 May 2021 17:04:28 +0800
+
 ukui-about (1.0.0-20) v101; urgency=medium
 
   * 关于麒麟界面授权信息-版本显示部分增加对os-release的判断
