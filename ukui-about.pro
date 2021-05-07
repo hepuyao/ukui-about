@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui KWindowSystem x11extras
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -28,10 +28,12 @@ LIBS          +=  -L/usr/lib/ -ldconf -lgsettings-qt
 
 SOURCES += \
     main.cpp \
-    about.cpp
+    about.cpp \
+    xatom-helper.cpp
 
 HEADERS += \
-    about.h
+    about.h \
+    xatom-helper.h
 
 TRANSLATIONS += \
     resource/ukui-about_zh_CN.ts

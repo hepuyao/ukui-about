@@ -7,8 +7,11 @@
 #include <QVBoxLayout>
 #include <QScrollArea>
 #include <QMainWindow>
+#include <QScrollBar>
+#include <QTextEdit>
+#include <QPushButton>
 
-class About : public QMainWindow
+class About : public QWidget
 {
     Q_OBJECT
 
@@ -28,6 +31,7 @@ private:
     QLabel *label_info;
     QLabel *label_copyright;
     QLabel *label_website;
+    QTextEdit  *text_copyright;
 
 
         const char* program_name = "Kylin";

@@ -177,7 +177,7 @@ long int string_2_time(char *str_time)
 }
 
 About::About(QWidget *parent)
-    : QMainWindow(parent)
+    : QWidget(parent)
 {
     setWindowIcon(QIcon::fromTheme("distributor-logo-kylin"));
     disPlay();
@@ -342,7 +342,7 @@ void About::getIconCopyrightNameInfo()
     {
         name = "Kylin";
         icon_name = "/usr/share/ukui/kylin.png";
-        copy_right = tr("All rights reserved by 2009-2020 KylinOS. all rights reserved.\n Kylin %1 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.").arg(version);
+        copy_right = tr("All rights reserved by 2009-2020 KylinOS. all rights reserved. Kylin %1 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.").arg(version);
     }
     else if (match_systemname("YHKylin\n") == 0)
     {
@@ -380,13 +380,54 @@ void About::disPlay()
      * label_logo
      * 为主界面显示logo
     */
+
+    this->resize(500,400);
+
+//    QWidget *bodyWidget=new QWidget();
+//    bodyWidget->setFixedSize(500,400);
+
+//    QWidget *main_widget = new QWidget(this);
+//    this->setCentralWidget(main_widget);
+
+    QVBoxLayout *bodyLayout=new QVBoxLayout(this);
+    bodyLayout->setContentsMargins(10,5,10,27);
+//    QWidget *titleLayoutWidget;
+//    titleLayoutWidget=new QWidget(this);
+//    titleLayoutWidget->setGeometry(0,0,500,40);
+    QHBoxLayout *titleLayout;
+    titleLayout = new QHBoxLayout();
+
+    QPushButton *btn=new QPushButton(this);
+    btn->setIcon(QIcon::fromTheme("distributor-logo-kylin"));
+    btn->setIconSize(QSize(16,16));
+    btn->setFixedSize(16,16);
+    QLabel *title_label=new QLabel(this);
+    title_label->setText("关于麒麟");
+    QPushButton *btn_close=new QPushButton(this);
+    btn_close->setIcon(QIcon::fromTheme("window-close-symbolic"));
+    btn_close->setFixedSize(24,24);
+    btn_close->setIconSize(QSize(12,12));
+
+    btn_close->setProperty("isWindowButton", 0x2);
+    btn_close->setProperty("useIconHighlightEffect", 0x8);
+    btn_close->setFlat(true);
+    connect(btn_close,&QPushButton::clicked,[this]{
+        this->close();
+    });
+
+    titleLayout->addWidget(btn);
+    titleLayout->addWidget(title_label);
+    titleLayout->addWidget(btn_close);
+
+
     QPixmap kylinicon(icon_name);
-    kylinicon=kylinicon.scaled(LOGO_WIDTH,LOGO_HIGTH);
+    kylinicon=kylinicon.scaled(192,75);
     label_logo=new QLabel(this);
     label_logo->setPixmap(kylinicon);
     label_logo->setAlignment(Qt::AlignCenter);
     label_logo->adjustSize();
-    label_logo->setGeometry(0,LEAVE_BLANK_HIGHT,ABOUT_WIDGET_WIDTH,label_logo->height());
+//    label_logo->setGeometry(154,LEAVE_BLANK_HIGHT+20,192,75);
+
 
 
     /*
@@ -428,9 +469,17 @@ void About::disPlay()
      * 版权信息
     */
     label_copyright=new QLabel(this);
+//    label_copyright->setText("aaaaa bbbbb ccccc ddddd eeeee fffff ggggg  hhhhh iiiii jjjjj kkkkk lllll mmmmm nnnnn ooooo ppppp qqqqq rrrrr ");
     label_copyright->setText(copy_right);
     label_copyright->setWordWrap(true);
+    label_copyright->adjustSize();
+    label_copyright->setMaximumWidth(380);
     label_copyright->setAlignment(Qt::AlignLeft);
+
+//    text_copyright=new QTextEdit(this);
+//    text_copyright->setText(copy_right);
+//    text_copyright->setAlignment(Qt::AlignLeft);
+
 ////    label_copyright->adjustSize();
 //    QFont font_copright;
 //    font_copright.setPointSize(11);
@@ -453,9 +502,16 @@ void About::disPlay()
 //    label_website->setFixedSize(ABOUT_WIDGET_WIDTH,label_website->height());
 
     QWidget *verticalLayoutWidget;
-    verticalLayoutWidget=new QWidget(this);
+    verticalLayoutWidget=new QWidget();
+
+    QWidget *scrollAreaWidgetContents;
+    scrollAreaWidgetContents = new QWidget();
+    scrollAreaWidgetContents->setObjectName(QString::fromUtf8("scrollAreaWidgetContents"));
+    scrollAreaWidgetContents->setGeometry(QRect(0, 0, 358, 166));
+//    verticalLayoutWidget->setContentsMargins(25,37,25,37);
+    scrollAreaWidgetContents->setContentsMargins(25,37,25,37);
     QVBoxLayout *verticalLayout;
-    verticalLayout = new QVBoxLayout(verticalLayoutWidget);
+    verticalLayout = new QVBoxLayout(scrollAreaWidgetContents);
 
 
     verticalLayout->addWidget(label_title);
@@ -464,12 +520,27 @@ void About::disPlay()
     verticalLayout->addWidget(label_website);
 
     QScrollArea *scrollArea = new QScrollArea(this);
-    scrollArea->setWidget(verticalLayoutWidget);
-    scrollArea->setFixedWidth(400);
-    scrollArea->setMinimumHeight(250);
-    scrollArea->move(100,label_logo->height()+10);
+//    scrollArea->setWidget(verticalLayoutWidget);
+    scrollArea->setWidgetResizable(true);
+//    scrollArea->setFixedWidth(436);
+//    scrollArea->setMinimumHeight(240);
+//    scrollArea->move(32,label_logo->height()+10);
+    scrollArea->setFixedSize(436,240);
+    scrollArea->setContentsMargins(25,37,25,37);
+//    scrollArea->setMaximumWidth(385);
 
+
+    scrollArea->setGeometry(0,0,385,166);
+    scrollArea->property("drawScrollBarGroove");
+    scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    //利用主题框架设置滚动条属性
+    scrollArea->verticalScrollBar()->setProperty("drawScrollBarGroove",false);
+    scrollArea->horizontalScrollBar()->setProperty("drawScrollBarGroove",false);
+    scrollArea->setWidget(scrollAreaWidgetContents);
+
+    bodyLayout->addLayout(titleLayout);
+    bodyLayout->addWidget(label_logo);
+    bodyLayout->addWidget(scrollArea,1,Qt::AlignHCenter);
 //    this->setFixedSize(ABOUT_WIDGET_WIDTH,LEAVE_BLANK_HIGHT*2+label_logo->height()+label_title->height()+label_info->height()+label_copyright->height()+label_website->height()+100);
-    this->setFixedSize(600,400);
-}
 
+}

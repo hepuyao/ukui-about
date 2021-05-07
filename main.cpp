@@ -7,6 +7,8 @@
 #include <fcntl.h>
 #include <syslog.h>
 #include <X11/Xlib.h>
+#include <KWindowEffects>
+#include "xatom-helper.h"
 
 void centerToScreen(QWidget* widget) {
     if (!widget)
@@ -22,19 +24,10 @@ void centerToScreen(QWidget* widget) {
 
 int main(int argc, char *argv[])
 {
-    Display *display = XOpenDisplay(NULL);
-    Screen *scrn = DefaultScreenOfDisplay(display);
-    if(scrn == nullptr) {
-        return 0;
-    }
-    int width = scrn->width;
-//    QApplication app(argc,argv);
-    if (width >= 2560) {
-    #if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
-        QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-        QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-    #endif
-    }
+
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+
 
     QApplication a(argc, argv);
 
@@ -61,5 +54,15 @@ int main(int argc, char *argv[])
     About *about =new About;
     centerToScreen(about);
     about->show();
+
+    KWindowEffects::enableBlurBehind(about->winId(),true);
+
+    // 添加窗管协议
+    MotifWmHints hints;
+    hints.flags = MWM_HINTS_FUNCTIONS|MWM_HINTS_DECORATIONS;
+    hints.functions = MWM_FUNC_ALL;
+    hints.decorations = MWM_DECOR_BORDER;
+    XAtomHelper::getInstance()->setWindowMotifHint(about->winId(), hints);
+
     return a.exec();
 }
