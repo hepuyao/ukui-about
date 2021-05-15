@@ -69,28 +69,6 @@ gchar *version = NULL;
 char kyinfoTerm[BUFF_SIZE] = {0};
 char licenseTerm[BUFF_SIZE] = {0};
 
-
-int match_systemname(char *name)
-{
-    FILE *fp;
-    char line[LINE_BUFF_SIZE_128] = {0};
-    char substr[LINE_BUFF_SIZE_32] = {0};
-    fp = fopen(LSB_RELEASE, "r");
-    if (!fp)
-    {
-        printf("open /etc/lsb-release file error!");
-        return -1;
-    }
-    fgets(line, LINE_BUFF_SIZE_128, fp);
-    fclose(fp);
-    strncpy(substr, line + 11, strlen(line) - 11);
-    if (strcmp(substr, name) == 0)
-    {
-        return 0;
-    }
-    return -1;
-}
-
 gchar* get_lsb_release_value(char *p_key)
 {
     FILE *fp;
@@ -298,64 +276,88 @@ void About::getKernelVersionInfo()
      * 获取当前内核名称和其它信息。
     */
     struct utsname uts;
-    qDebug()<<"uts"<<uname(&uts);
     /*
      * Linux uname（英文全拼：unix name）命令用于显示系统信息。
      * uname 可显示电脑以及操作系统的相关信息
     */
     if (uname(&uts) >= 0) {
         kernel_name = g_strdup(uts.release);
-        qDebug()<<"uts.version  : "<<uts.version <<"        kernel_name :"<<kernel_name;
     }
 }
+
 
 /*
  * 获取主界面图标，copyright，名称等信息
 */
 void About::getIconCopyrightNameInfo()
 {
-    if(TRUE == is_pks_version())
-    {
+    icon_name = "/usr/share/ukui/kylin-dark.png";
+    copy_right = tr("All rights reserved by 2009-2020 KylinOS. all rights reserved. Kylin %1 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.").arg(getDescriptionVersion());
+}
 
-        if (kernel_name)
-        {
-            if (strstr(kernel_name, ".server"))
-            {
-                name = "Kylin Server PKS";
+//通过 os-release 获取系统版本
+bool About::getOsRelease()
+{
+    QFile file("/etc/os-release");
+    if (!file.open(QIODevice::ReadOnly)) qDebug() << "Read file Failed.";
+    while (!file.atEnd()) {
+        QByteArray line = file.readLine();
+        QString str(line);
+        if (str.contains("VERSION=")){
+            if(str.contains("Professional") || str.contains("SP1")){
+            return true;
             }
-            else
-            {
-                name = "Kylin Desktop PKS";
-            }
-            g_free(kernel_name);
-            kernel_name = NULL;
         }
-        else
-        {
-            name = "Kylin Desktop PKS";
-        }
+    }
+    return false;
+}
 
-        icon_name = "/usr/share/ukui/kylin.png";
-        copy_right = tr("All rights reserved by 2009-2020 KylinOS. all rights reserved.\n Kylin %1 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.").arg(version);
+QString About::getLsbRealse(QString key)
+{
+    if(key == DISTRIB_VERSION_MODE){
+        QFile file("/etc/lsb-release");
+        if (!file.open(QIODevice::ReadOnly)) qDebug() << "Read file Failed.";
+        while (!file.atEnd()) {
+            QByteArray line = file.readLine();
+            QString str(line);
+            if (str.contains(DISTRIB_VERSION_MODE)){
+                return str.remove("DISTRIB_VERSION_MODE=");
+            }
+        }
     }
-    else if (match_systemname("Kylin\n") == 0)
-    {
-        name = "Kylin";
-        icon_name = "/usr/share/ukui/kylin.png";
-        copy_right = tr("All rights reserved by 2009-2020 KylinOS. all rights reserved. Kylin %1 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.").arg(version);
+}
+
+QString About::getCommissionVersion()
+{
+    QFile file("/etc/lsb-release");
+    if (!file.open(QIODevice::ReadOnly)) qDebug() << "Read file Failed.";
+    while (!file.atEnd()) {
+        QByteArray line = file.readLine();
+        QString str(line);
+        if (str.contains("DISTRIB_VERSION_MODE=")){
+            if(str.contains("gf") || str.contains("GF"))
+                return "gf";
+        }
     }
-    else if (match_systemname("YHKylin\n") == 0)
-    {
-        name = "YHKylin";
-        icon_name = "/usr/share/mate-about/yhkylin.png";
-        copy_right = tr("All rights reserved by 2009-2020 YHKylinOS. all rights reserved. \n YHKylin version 4 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.");
+    return "normal";
+}
+
+QString About::getDescriptionVersion()
+{
+    QFile file("/etc/lsb-release");
+    if (!file.open(QIODevice::ReadOnly)) qDebug() << "Read file Failed.";
+    while (!file.atEnd()) {
+        QByteArray line = file.readLine();
+        QString str(line);
+        if (str.contains("DISTRIB_DESCRIPTION=")){
+            str.remove("\"");
+            str.remove("DISTRIB_DESCRIPTION=Kylin V10 ");
+            str = str.simplified();
+            if(str=="GF") return tr("GF");
+            else return str;
+        }
     }
-    else if (match_systemname("NeoKylin\n") == 0)
-    {
-        name = "NeoKylin";
-        icon_name = "/usr/share/mate-about/neokylin.png";
-        copy_right = tr("All rights reserved by 2009-2020 NeoKylinOS. all rights reserved.\n NeoKylin version 10 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.");
-    }
+    return "SP1";
 }
 
 /*
@@ -370,7 +372,6 @@ void About::disPlay()
     getKernelVersionInfo();
 
     setWindowTitle(tr("about Kylin"));
-
     /*
      * 将label_logo label_info label_copyright label_website
      * 通过setGeometry在主窗口显示
@@ -383,17 +384,8 @@ void About::disPlay()
 
     this->resize(500,400);
 
-//    QWidget *bodyWidget=new QWidget();
-//    bodyWidget->setFixedSize(500,400);
-
-//    QWidget *main_widget = new QWidget(this);
-//    this->setCentralWidget(main_widget);
-
     QVBoxLayout *bodyLayout=new QVBoxLayout(this);
     bodyLayout->setContentsMargins(10,5,10,27);
-//    QWidget *titleLayoutWidget;
-//    titleLayoutWidget=new QWidget(this);
-//    titleLayoutWidget->setGeometry(0,0,500,40);
     QHBoxLayout *titleLayout;
     titleLayout = new QHBoxLayout();
 
@@ -402,7 +394,7 @@ void About::disPlay()
     btn->setIconSize(QSize(16,16));
     btn->setFixedSize(16,16);
     QLabel *title_label=new QLabel(this);
-    title_label->setText("关于麒麟");
+    title_label->setText("About Kylin");
     QPushButton *btn_close=new QPushButton(this);
     btn_close->setIcon(QIcon::fromTheme("window-close-symbolic"));
     btn_close->setFixedSize(24,24);
@@ -435,57 +427,32 @@ void About::disPlay()
      * 系统版本信息
     */
     label_title=new QLabel(this);
-    label_title->setText(QString("银河麒麟桌面操作系统 %1").arg(version));
+    label_title->setText(QString(tr("Kylin Desktop Operating System V10 %1")).arg(getDescriptionVersion()));
     label_title->setWordWrap(true);
     label_title->setAlignment(Qt::AlignLeft);
-//    label_title->adjustSize();
-//    QFont font_title("Microsoft YaHei", 14, 75);
-//    label_title->setFont(font_title);
-//    label_title->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height(),ABOUT_WIDGET_WIDTH,label_title->height());
-//    label_title->setFixedSize(ABOUT_WIDGET_WIDTH,label_title->height());
 
     /*
      * label_info
      * 系统版本信息
     */
+    QString info_str(info);
+    info_str.replace("Kylin V10",QString("Kylin V10(%1)").arg(getDescriptionVersion()));
+
     label_info=new QLabel(this);
-    label_info->setText(info);
+    label_info->setText(info_str);
     label_info->setWordWrap(true);
     label_info->setAlignment(Qt::AlignLeft);
-//    label_info->adjustSize();
-//    QFont font;
-//    font.setPointSize(11);
-//    /* 使用QFont的setPointSize，此时字体的大小会跟随DPI改变而改变。
-//     * 使用QFont的setPixelSize，此时字体的大小不会随DPI的改变而发生变化。
-//     * 但两者都存在的问题是遇到无info文字被遮挡的问题
-//*/
-//    label_info->setFont(font);
-////    label_info->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height()+label_title->height(),ABOUT_WIDGET_WIDTH,label_info->height());
-//    label_info->setFixedSize(ABOUT_WIDGET_WIDTH,label_info->height());
-//    label_info->setMinimumSize(QSize(ABOUT_WIDGET_WIDTH,150));
 
     /*
      * label_copyright
      * 版权信息
     */
     label_copyright=new QLabel(this);
-//    label_copyright->setText("aaaaa bbbbb ccccc ddddd eeeee fffff ggggg  hhhhh iiiii jjjjj kkkkk lllll mmmmm nnnnn ooooo ppppp qqqqq rrrrr ");
     label_copyright->setText(copy_right);
     label_copyright->setWordWrap(true);
     label_copyright->adjustSize();
     label_copyright->setMaximumWidth(380);
     label_copyright->setAlignment(Qt::AlignLeft);
-
-//    text_copyright=new QTextEdit(this);
-//    text_copyright->setText(copy_right);
-//    text_copyright->setAlignment(Qt::AlignLeft);
-
-////    label_copyright->adjustSize();
-//    QFont font_copright;
-//    font_copright.setPointSize(11);
-//    label_copyright->setFont(font_copright);
-//    //label_copyright->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height()+label_title->height()+label_info->height(),ABOUT_WIDGET_WIDTH,label_copyright->height());
-//    label_copyright->setFixedSize(ABOUT_WIDGET_WIDTH,label_copyright->height());
 
 
     /*
@@ -495,11 +462,6 @@ void About::disPlay()
     label_website->setOpenExternalLinks(true);
     label_website->setText(QString::fromLocal8Bit("<a style='color: blue;' href = http://www.kylinos.cn> http://www.kylinos.cn</a>"));
     label_website->setAlignment(Qt::AlignLeft);
-//    QFont font_webkit;
-//    font_webkit.setPointSize(11);
-//    label_website->setFont(font_webkit);
-//    //label_website->setGeometry(0,LEAVE_BLANK_HIGHT+label_logo->height()+label_title->height()+label_info->height()+label_copyright->height(),ABOUT_WIDGET_WIDTH,label_website->height());
-//    label_website->setFixedSize(ABOUT_WIDGET_WIDTH,label_website->height());
 
     QWidget *verticalLayoutWidget;
     verticalLayoutWidget=new QWidget();
@@ -508,7 +470,6 @@ void About::disPlay()
     scrollAreaWidgetContents = new QWidget();
     scrollAreaWidgetContents->setObjectName(QString::fromUtf8("scrollAreaWidgetContents"));
     scrollAreaWidgetContents->setGeometry(QRect(0, 0, 358, 166));
-//    verticalLayoutWidget->setContentsMargins(25,37,25,37);
     scrollAreaWidgetContents->setContentsMargins(25,37,25,37);
     QVBoxLayout *verticalLayout;
     verticalLayout = new QVBoxLayout(scrollAreaWidgetContents);
@@ -520,14 +481,9 @@ void About::disPlay()
     verticalLayout->addWidget(label_website);
 
     QScrollArea *scrollArea = new QScrollArea(this);
-//    scrollArea->setWidget(verticalLayoutWidget);
     scrollArea->setWidgetResizable(true);
-//    scrollArea->setFixedWidth(436);
-//    scrollArea->setMinimumHeight(240);
-//    scrollArea->move(32,label_logo->height()+10);
     scrollArea->setFixedSize(436,240);
     scrollArea->setContentsMargins(25,37,25,37);
-//    scrollArea->setMaximumWidth(385);
 
 
     scrollArea->setGeometry(0,0,385,166);
@@ -538,9 +494,25 @@ void About::disPlay()
     scrollArea->horizontalScrollBar()->setProperty("drawScrollBarGroove",false);
     scrollArea->setWidget(scrollAreaWidgetContents);
 
+    //将标题栏，logo和scrollArea放进layout中
     bodyLayout->addLayout(titleLayout);
     bodyLayout->addWidget(label_logo);
     bodyLayout->addWidget(scrollArea,1,Qt::AlignHCenter);
-//    this->setFixedSize(ABOUT_WIDGET_WIDTH,LEAVE_BLANK_HIGHT*2+label_logo->height()+label_title->height()+label_info->height()+label_copyright->height()+label_website->height()+100);
+}
 
+void About::paintEvent(QPaintEvent *e)
+{
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+    p.setPen(Qt::NoPen);
+    //double tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
+    QColor color = palette().color(QPalette::Base);
+    color.setAlpha(70);
+    QBrush brush =QBrush(color);
+    p.setBrush(brush);
+
+    p.setRenderHint(QPainter::Antialiasing);
+    p.drawRoundedRect(opt.rect,12,12);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
