@@ -26,6 +26,10 @@ extern "C" {
 #include <gio/gio.h>
 }
 
+#define TRANSPARENCY_SETTINGS       "org.ukui.control-center.personalise"
+#define TRANSPARENCY_KEY            "transparency"
+#define STYLE_SETTINGS              "org.ukui.style"
+#define STYLE_KEY                   "styleName"
 
 #define LSB_RELEASE "/etc/lsb-release"
 #define DISTRIB_ID "DISTRIB_ID"
@@ -158,12 +162,52 @@ About::About(QWidget *parent)
     : QWidget(parent)
 {
     setWindowIcon(QIcon::fromTheme("distributor-logo-kylin"));
+    connectStyleChange();
     disPlay();
 
 }
 
 About::~About()
 {
+}
+
+void About::connectStyleChange()
+{
+    const QByteArray id(TRANSPARENCY_SETTINGS);
+    if(QGSettings::isSchemaInstalled(id)){
+        gsettings = new QGSettings(id);
+        transparency=gsettings->get(TRANSPARENCY_KEY).toInt()*100;
+    }else{
+        transparency=75;
+    }
+
+    connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
+        if(key==TRANSPARENCY_KEY)
+            transparency=gsettings->get(TRANSPARENCY_KEY).toInt()*100;
+    });
+
+    const QByteArray id_style(STYLE_SETTINGS);
+    if(QGSettings::isSchemaInstalled(id_style)){
+        gsettings_style=new QGSettings(id_style);
+        if(gsettings_style->get(STYLE_KEY)=="ukui-dark")
+            icon_name = "/usr/share/ukui/kylin-light.png";
+        else
+            icon_name = "/usr/share/ukui/kylin-dark.png";
+    }
+    connect(gsettings_style,&QGSettings::changed,this,[=](const QString &key){
+        if(key==STYLE_KEY){
+            logoChange();
+            label_logo->clear();
+            if(gsettings_style->get(STYLE_KEY)=="ukui-dark"){
+                qDebug()<<"ukui-dark";
+                icon_name = "/usr/share/ukui/kylin-light.png";
+            }
+            else{
+                qDebug()<<"ukui-light";
+                icon_name = "/usr/share/ukui/kylin-dark.png";
+            }
+        }
+    });
 }
 
 void About::mate_about_run(void)
@@ -291,7 +335,6 @@ void About::getKernelVersionInfo()
 */
 void About::getIconCopyrightNameInfo()
 {
-    icon_name = "/usr/share/ukui/kylin-dark.png";
     copy_right = tr("All rights reserved by 2009-2020 KylinOS. all rights reserved. Kylin %1 and its user interface is protected by intellectual property laws trademark law in China and other countries and other regions to be enacted or enacted.").arg(getDescriptionVersion());
 }
 
@@ -342,6 +385,7 @@ QString About::getCommissionVersion()
     return "normal";
 }
 
+//获取lsb_release 的 DISTRIB_DESCRIPTION 字段
 QString About::getDescriptionVersion()
 {
     QFile file("/etc/lsb-release");
@@ -351,13 +395,13 @@ QString About::getDescriptionVersion()
         QString str(line);
         if (str.contains("DISTRIB_DESCRIPTION=")){
             str.remove("\"");
-            str.remove("DISTRIB_DESCRIPTION=Kylin V10 ");
+            str.remove("DISTRIB_DESCRIPTION=Kylin V10");
             str = str.simplified();
-            if(str=="GF") return tr("GF");
+            if(str.contains("GF")) return tr("GF");
             else return str;
         }
     }
-    return "SP1";
+    return "";
 }
 
 /*
@@ -391,8 +435,8 @@ void About::disPlay()
 
     QPushButton *btn=new QPushButton(this);
     btn->setIcon(QIcon::fromTheme("distributor-logo-kylin"));
-    btn->setIconSize(QSize(16,16));
-    btn->setFixedSize(16,16);
+    btn->setIconSize(QSize(24,24));
+    btn->setFixedSize(24,24);
     QLabel *title_label=new QLabel(this);
     title_label->setText("About Kylin");
     QPushButton *btn_close=new QPushButton(this);
@@ -411,14 +455,7 @@ void About::disPlay()
     titleLayout->addWidget(title_label);
     titleLayout->addWidget(btn_close);
 
-
-    QPixmap kylinicon(icon_name);
-    kylinicon=kylinicon.scaled(192,75);
-    label_logo=new QLabel(this);
-    label_logo->setPixmap(kylinicon);
-    label_logo->setAlignment(Qt::AlignCenter);
-    label_logo->adjustSize();
-//    label_logo->setGeometry(154,LEAVE_BLANK_HIGHT+20,192,75);
+    logoChange();
 
 
 
@@ -436,7 +473,8 @@ void About::disPlay()
      * 系统版本信息
     */
     QString info_str(info);
-    info_str.replace("Kylin V10",QString("Kylin V10(%1)").arg(getDescriptionVersion()));
+    if(getDescriptionVersion() != nullptr)
+        info_str.replace("Kylin V10",QString("Kylin V10(%1)").arg(getDescriptionVersion()));
 
     label_info=new QLabel(this);
     label_info->setText(info_str);
@@ -460,7 +498,7 @@ void About::disPlay()
     */
     label_website=new QLabel(this);
     label_website->setOpenExternalLinks(true);
-    label_website->setText(QString::fromLocal8Bit("<a style='color: blue;' href = http://www.kylinos.cn> http://www.kylinos.cn</a>"));
+    label_website->setText(QString::fromLocal8Bit("<a style='color: black;' href = http://www.kylinos.cn> http://www.kylinos.cn</a>"));
     label_website->setAlignment(Qt::AlignLeft);
 
     QWidget *verticalLayoutWidget;
@@ -500,6 +538,16 @@ void About::disPlay()
     bodyLayout->addWidget(scrollArea,1,Qt::AlignHCenter);
 }
 
+void About::logoChange()
+{
+    label_logo=new QLabel(this);
+    label_logo->clear();
+    QPixmap kylinicon(icon_name);
+    kylinicon=kylinicon.scaled(192,75);
+    label_logo->setPixmap(kylinicon);
+    label_logo->setAlignment(Qt::AlignCenter);
+    label_logo->adjustSize();
+}
 void About::paintEvent(QPaintEvent *e)
 {
     QStyleOption opt;
@@ -508,7 +556,7 @@ void About::paintEvent(QPaintEvent *e)
     p.setPen(Qt::NoPen);
     //double tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
     QColor color = palette().color(QPalette::Base);
-    color.setAlpha(70);
+    color.setAlpha(transparency);
     QBrush brush =QBrush(color);
     p.setBrush(brush);
 

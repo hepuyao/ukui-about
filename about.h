@@ -13,6 +13,7 @@
 #include <QFile>
 #include <QStyleOption>
 #include <QPainter>
+#include <QGSettings>
 
 class About : public QWidget
 {
@@ -21,6 +22,8 @@ class About : public QWidget
 public:
     About(QWidget *parent = nullptr);
     ~About();
+
+    void connectStyleChange();
 
 private:
     void getIconCopyrightNameInfo();
@@ -32,6 +35,7 @@ private:
     QString getDescriptionVersion();
 
     void disPlay();
+    void logoChange();
     void mate_about_run();
     QLabel *label_logo;
     QLabel *label_title;
@@ -40,6 +44,9 @@ private:
     QLabel *label_website;
     QTextEdit  *text_copyright;
 
+    QGSettings *gsettings;
+    QGSettings *gsettings_style;
+    int transparency;
 
     const char* program_name = "Kylin";
     const char* icon = "/usr/share/mate-about/logo.png";
