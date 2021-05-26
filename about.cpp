@@ -196,16 +196,16 @@ void About::connectStyleChange()
     }
     connect(gsettings_style,&QGSettings::changed,this,[=](const QString &key){
         if(key==STYLE_KEY){
-            logoChange();
-            label_logo->clear();
+
             if(gsettings_style->get(STYLE_KEY)=="ukui-dark"){
                 qDebug()<<"ukui-dark";
                 icon_name = "/usr/share/ukui/kylin-light.png";
             }
             else{
-                qDebug()<<"ukui-light";
+                qDebug()<<"ukui-dark";
                 icon_name = "/usr/share/ukui/kylin-dark.png";
             }
+            logoChange();
         }
     });
 }
@@ -455,6 +455,7 @@ void About::disPlay()
     titleLayout->addWidget(title_label);
     titleLayout->addWidget(btn_close);
 
+    label_logo=new QLabel(this);
     logoChange();
 
 
@@ -540,8 +541,6 @@ void About::disPlay()
 
 void About::logoChange()
 {
-    label_logo=new QLabel(this);
-    label_logo->clear();
     QPixmap kylinicon(icon_name);
     kylinicon=kylinicon.scaled(192,75);
     label_logo->setPixmap(kylinicon);
