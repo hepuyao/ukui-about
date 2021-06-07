@@ -161,10 +161,10 @@ long int string_2_time(char *str_time)
 About::About(QWidget *parent)
     : QWidget(parent)
 {
+    setAttribute(Qt::WA_TranslucentBackground);
     setWindowIcon(QIcon::fromTheme("distributor-logo-kylin"));
     connectStyleChange();
     disPlay();
-
 }
 
 About::~About()
@@ -176,14 +176,15 @@ void About::connectStyleChange()
     const QByteArray id(TRANSPARENCY_SETTINGS);
     if(QGSettings::isSchemaInstalled(id)){
         gsettings = new QGSettings(id);
-        transparency=gsettings->get(TRANSPARENCY_KEY).toInt()*100;
+        transparency=gsettings->get(TRANSPARENCY_KEY).toFloat()*255;
     }else{
         transparency=75;
     }
 
     connect(gsettings, &QGSettings::changed, this, [=] (const QString &key){
         if(key==TRANSPARENCY_KEY)
-            transparency=gsettings->get(TRANSPARENCY_KEY).toInt()*100;
+            transparency=gsettings->get(TRANSPARENCY_KEY).toFloat()*255;
+        update();
     });
 
     const QByteArray id_style(STYLE_SETTINGS);
@@ -193,7 +194,7 @@ void About::connectStyleChange()
             icon_name = "/usr/share/ukui/kylin-light.png";
         else
             icon_name = "/usr/share/ukui/kylin-dark.png";
-    }
+
     connect(gsettings_style,&QGSettings::changed,this,[=](const QString &key){
         if(key==STYLE_KEY){
 
@@ -208,6 +209,7 @@ void About::connectStyleChange()
             logoChange();
         }
     });
+   }
 }
 
 void About::mate_about_run(void)
@@ -426,19 +428,27 @@ void About::disPlay()
      * 为主界面显示logo
     */
 
-    this->resize(500,400);
+    this->setFixedSize(500,400);
 
     QVBoxLayout *bodyLayout=new QVBoxLayout(this);
     bodyLayout->setContentsMargins(10,5,10,27);
     QHBoxLayout *titleLayout;
     titleLayout = new QHBoxLayout();
 
-    QPushButton *btn=new QPushButton(this);
-    btn->setIcon(QIcon::fromTheme("distributor-logo-kylin"));
-    btn->setIconSize(QSize(24,24));
-    btn->setFixedSize(24,24);
+    QLabel* lableicon = new QLabel(this);
+    QIcon icon  = QIcon::fromTheme("distributor-logo-kylin");
+    QPixmap pix = icon.pixmap(QSize(24,24));
+    lableicon->setPixmap(pix);
+    lableicon->setFixedSize(QSize(24,24));
+    lableicon->setContentsMargins(0,0,0,0);
+//    btn->setIcon(QIcon::fromTheme("distributor-logo-kylin"));
+//    btn->setIconSize(QSize(24,24));
+//    btn->setFixedSize(24,24);
+//    btn->setProperty("isWindowButton", 0x1);
+//    btn->setProperty("useIconHighlightEffect", 0x2);
+
     QLabel *title_label=new QLabel(this);
-    title_label->setText("About Kylin");
+    title_label->setText(tr("About Kylin"));
     QPushButton *btn_close=new QPushButton(this);
     btn_close->setIcon(QIcon::fromTheme("window-close-symbolic"));
     btn_close->setFixedSize(24,24);
@@ -451,7 +461,7 @@ void About::disPlay()
         this->close();
     });
 
-    titleLayout->addWidget(btn);
+    titleLayout->addWidget(lableicon);
     titleLayout->addWidget(title_label);
     titleLayout->addWidget(btn_close);
 
@@ -499,7 +509,7 @@ void About::disPlay()
     */
     label_website=new QLabel(this);
     label_website->setOpenExternalLinks(true);
-    label_website->setText(QString::fromLocal8Bit("<a style='color: black;' href = http://www.kylinos.cn> http://www.kylinos.cn</a>"));
+    label_website->setText(QString::fromLocal8Bit(" <a href = http://www.kylinos.cn> http://www.kylinos.cn</a>"));
     label_website->setAlignment(Qt::AlignLeft);
 
     QWidget *verticalLayoutWidget;
@@ -509,7 +519,7 @@ void About::disPlay()
     scrollAreaWidgetContents = new QWidget();
     scrollAreaWidgetContents->setObjectName(QString::fromUtf8("scrollAreaWidgetContents"));
     scrollAreaWidgetContents->setGeometry(QRect(0, 0, 358, 166));
-    scrollAreaWidgetContents->setContentsMargins(25,37,25,37);
+    scrollAreaWidgetContents->setContentsMargins(20,20,20,20);
     QVBoxLayout *verticalLayout;
     verticalLayout = new QVBoxLayout(scrollAreaWidgetContents);
 
@@ -523,6 +533,8 @@ void About::disPlay()
     scrollArea->setWidgetResizable(true);
     scrollArea->setFixedSize(436,240);
     scrollArea->setContentsMargins(25,37,25,37);
+    scrollArea->setAttribute(Qt::WA_TranslucentBackground);
+    scrollArea->viewport()->setAttribute(Qt::WA_TranslucentBackground);
 
 
     scrollArea->setGeometry(0,0,385,166);
@@ -553,13 +565,16 @@ void About::paintEvent(QPaintEvent *e)
     opt.init(this);
     QPainter p(this);
     p.setPen(Qt::NoPen);
-    //double tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
+  //  double tran=transparency_gsettings->get(TRANSPARENCY_KEY).toDouble()*255;
     QColor color = palette().color(QPalette::Base);
     color.setAlpha(transparency);
+    QPalette pal(this->palette());
+    pal.setColor(QPalette::Window,QColor(color));
+    this->setPalette(pal);
     QBrush brush =QBrush(color);
     p.setBrush(brush);
 
-    p.setRenderHint(QPainter::Antialiasing);
-    p.drawRoundedRect(opt.rect,12,12);
-    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+//    p.setRenderHint(QPainter::Antialiasing);
+      p.drawRoundedRect(opt.rect,12,12);
+      style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
